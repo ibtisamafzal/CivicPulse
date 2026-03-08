@@ -5,6 +5,7 @@
 
 /* ─── Constants ─── */
 const SCORE_COLORS = { high: "#06d6a0", medium: "#f59e0b", low: "#ef4444" };
+const THEME_STORAGE_KEY = "civicpulse-theme";
 
 const FALLBACK_BOUNDARIES = {
   "West Montgomery": [
@@ -40,6 +41,7 @@ const FALLBACK_BOUNDARIES = {
 };
 
 let map,
+  mapBaseLayer,
   chart,
   briefingPlayerBound = false;
 
@@ -59,6 +61,109 @@ async function fetchJson(url, options) {
 function formatDuration(sec) {
   const t = Number(sec) || 0;
   return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+}
+
+function getThemeToken(name, fallback) {
+  const value = getComputedStyle(document.body).getPropertyValue(name).trim();
+  return value || fallback;
+}
+
+function getActiveTheme() {
+  const htmlTheme = document.documentElement.dataset.theme;
+  const bodyTheme = document.body.dataset.theme;
+  return htmlTheme === "dark" || bodyTheme === "dark" ? "dark" : "light";
+}
+
+function updateThemeToggleButton(theme) {
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+
+  const isDark = theme === "dark";
+  toggle.setAttribute("aria-pressed", String(isDark));
+  toggle.setAttribute(
+    "aria-label",
+    isDark ? "Activate light theme" : "Activate dark theme",
+  );
+  toggle.title = isDark ? "Activate light theme" : "Activate dark theme";
+}
+
+function getMapBaseLayer(theme) {
+  const style = theme === "dark" ? "dark_all" : "light_all";
+  return L.tileLayer(
+    `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}{r}.png`,
+    {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+      maxZoom: 19,
+    },
+  );
+}
+
+function applyMapTheme(theme) {
+  if (!map || typeof L === "undefined") return;
+  if (mapBaseLayer) {
+    map.removeLayer(mapBaseLayer);
+  }
+  mapBaseLayer = getMapBaseLayer(theme);
+  mapBaseLayer.addTo(map);
+}
+
+function applyChartTheme() {
+  if (!chart) return;
+
+  const gridColor = getThemeToken("--chart-grid", "rgba(17, 35, 63, 0.11)");
+  const tickColor = getThemeToken("--chart-ticks", "#41597c");
+
+  if (chart.options?.scales?.y) {
+    chart.options.scales.y.grid.color = gridColor;
+    chart.options.scales.y.ticks.color = tickColor;
+  }
+  if (chart.options?.scales?.x) {
+    chart.options.scales.x.ticks.color = tickColor;
+  }
+
+  chart.update();
+}
+
+function applyTheme(theme, { persist = true } = {}) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  document.documentElement.dataset.theme = nextTheme;
+  document.documentElement.style.colorScheme = nextTheme;
+  document.body.dataset.theme = nextTheme;
+  updateThemeToggleButton(nextTheme);
+
+  if (persist) {
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch {
+      // Ignore storage failures in private browsing or restricted contexts.
+    }
+  }
+
+  applyMapTheme(nextTheme);
+  applyChartTheme();
+}
+
+function setupThemeToggle() {
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+
+  let initialTheme = "light";
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === "dark" || stored === "light") {
+      initialTheme = stored;
+    }
+  } catch {
+    initialTheme = "light";
+  }
+
+  applyTheme(initialTheme, { persist: false });
+
+  toggle.addEventListener("click", () => {
+    const nextTheme = getActiveTheme() === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+  });
 }
 
 /* ============================================================
@@ -95,6 +200,7 @@ function handleRoute() {
   if (map && path !== "/features/map") {
     map.remove();
     map = null;
+    mapBaseLayer = null;
   }
   if (chart && path !== "/features/chart") {
     chart.destroy();
@@ -237,13 +343,6 @@ function featureCardsHTML() {
       title: "Health Scores",
       desc: "Composite scores weighted across safety, blight, service quality, activity, and communications.",
       link: "/features/scores",
-    },
-    {
-      icon: "📈",
-      cls: "chart",
-      title: "Signal Snapshot",
-      desc: "Visual bar chart comparing neighborhood scores side by side for quick relative analysis.",
-      link: "/features/chart",
     },
     {
       icon: "☀️",
@@ -1285,14 +1384,7 @@ function renderMap(scores) {
       zoomControl: false,
       attributionControl: true,
     }).setView([32.3668, -86.3], 12);
-    L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
-        maxZoom: 19,
-      },
-    ).addTo(map);
+    applyMapTheme(getActiveTheme());
   }
 
   map.eachLayer((l) => {
@@ -1353,6 +1445,8 @@ function renderChart(scores) {
   if (!ctx) return;
   const labels = scores.map((x) => x.name);
   const data = scores.map((x) => x.score);
+  const gridColor = getThemeToken("--chart-grid", "rgba(17, 35, 63, 0.11)");
+  const tickColor = getThemeToken("--chart-ticks", "#41597c");
 
   if (chart) chart.destroy();
 
@@ -1377,12 +1471,12 @@ function renderChart(scores) {
         y: {
           min: 0,
           max: 100,
-          grid: { color: "rgba(255,255,255,.06)" },
-          ticks: { color: "#8ea4c8" },
+          grid: { color: gridColor },
+          ticks: { color: tickColor },
         },
         x: {
           grid: { display: false },
-          ticks: { color: "#8ea4c8", maxRotation: 0, minRotation: 0 },
+          ticks: { color: tickColor, maxRotation: 0, minRotation: 0 },
         },
       },
       plugins: { legend: { display: false } },
@@ -2137,6 +2231,25 @@ function setupVoiceWidget() {
 }
 
 /* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+function setupScrollTop() {
+  const scrollTopBtn = document.getElementById("scroll-top");
+  if (!scrollTopBtn) return;
+
+  const onScroll = () => {
+    scrollTopBtn.classList.toggle("visible", window.scrollY > 420);
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+/* ============================================================
    NAV BEHAVIOR
    ============================================================ */
 function setupNav() {
@@ -2173,9 +2286,11 @@ function setupLinks() {
    INIT
    ============================================================ */
 function init() {
+  setupThemeToggle();
   setupNav();
   setupLinks();
   setupVoiceWidget();
+  setupScrollTop();
 
   // Handle browser back/forward
   window.addEventListener("popstate", handleRoute);
