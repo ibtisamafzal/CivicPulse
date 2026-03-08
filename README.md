@@ -1,89 +1,117 @@
 # CivicPulse Montgomery
 
-CivicPulse Montgomery is an AI-powered civic intelligence platform that turns public city signals into neighborhood-level insights, alerts, and actions.
+AI-powered civic intelligence for Montgomery neighborhoods.
 
-Built for hackathon judging, this project is optimized for:
+This repository is prepared as a **World Wide Vibes (GenAI Works) hackathon submission**: clear challenge fit, runnable prototype, and judge-focused demo flow.
 
-- Fast understanding of the problem and solution
-- Easy local run in under 5 minutes
-- Clear, demo-ready feature walkthroughs
+## Hackathon Snapshot
 
-## 1. Hackathon Summary
+- Event: GenAI Works World Wide Vibes Hackathon
+- Focus: AI + data solutions for real city challenges
+- Selected challenge fit:
+  - Civic Access & Community Communication
+  - Smart Cities, Infrastructure & Public Spaces
+  - Public Safety, Emergency Response & City Analytics
+- Submission type: Working prototype + short presentation/demo
 
-### Problem
+## Problem
 
-Residents and local leaders often have civic data spread across many portals, making it hard to detect neighborhood decline or prioritize action quickly.
+City signals (crime, permits, service requests, blight, announcements) are fragmented across portals. Residents and city teams lose time stitching data together, which delays interventions in neighborhoods that need support most.
 
-### Solution
+## Solution
 
-CivicPulse combines city data + AI analysis into one daily intelligence experience:
+CivicPulse unifies public civic signals and AI into one daily decision layer:
 
-- Composite neighborhood health scores
-- Geographic equity map
-- Anomaly-based proactive alerts
+- Neighborhood health scoring
+- Equity map visualization
+- Anomaly-based alerting
 - Morning briefing (text + audio)
-- Ask AI and voice-first 311 assistant
+- AI Q&A and voice-first 311 support
 
-### Why it matters
+## Why This Project Is Competitive
 
-It helps city teams and communities move from reactive reporting to proactive intervention.
+This section maps directly to common hackathon judging dimensions.
 
-## 2. Core Features (With Demo Examples)
+### 1) Relevance
+
+- Uses real Montgomery civic datasets and city-context web updates.
+- Targets practical city operations: backlog triage, neighborhood risk detection, resident communication.
+
+### 2) Execution Quality
+
+- Full-stack app with deployed backend + deploy-ready frontend.
+- End-to-end pipeline: ingest -> score -> alert -> explain -> action.
+- API-first design with deterministic fallback behavior.
+
+### 3) Originality
+
+- Combines civic anomaly detection with explainable neighborhood scoring.
+- Integrates an AI assistant plus voice workflow for service ticket creation.
+
+### 4) Social Impact
+
+- Makes neighborhood inequity visible in one view.
+- Enables faster response to high-risk areas and service gaps.
+
+### 5) Commercial Potential
+
+- Reusable for municipal departments, nonprofits, and civic-tech operators.
+- Can scale city-to-city by swapping dataset connectors and boundaries.
+
+## Features With Demo Examples
 
 ### Feature 1: Equity Map
 
-- What it does: Shows neighborhood polygons color-coded by live health score.
-- UI demo: Open `/features/map` and click each neighborhood polygon.
-- Expected result: Popups show neighborhood score and trend (`up`, `down`, or `stable`).
-- Data source: `GET /api/scores`
+- URL: `/features/map`
+- What judges should do: Click neighborhood polygons.
+- Expected output: Color-coded health status and trend per neighborhood.
+- API: `GET /api/scores`
 
 ### Feature 2: Neighborhood Health Scores
 
-- What it does: Computes weighted score using Safety, Blight, Service, Activity, and Communications.
-- UI demo: Open `/features/scores`.
-- Expected result: Score cards with breakdown, top issues, and trend per neighborhood.
-- Data source: `GET /api/scores`
+- URL: `/features/scores`
+- What judges should do: Review cards for all neighborhoods.
+- Expected output: Composite score, factor breakdown, top pressure points, trend.
+- API: `GET /api/scores`
 
 ### Feature 3: Signal Snapshot Chart
 
-- What it does: Visual comparison of neighborhood scores in chart form.
-- UI demo: Open `/features/chart`.
-- Expected result: Side-by-side score bars for rapid scan of strongest/weakest areas.
-- Data source: `GET /api/scores`
+- URL: `/features/chart`
+- What judges should do: Compare neighborhoods side by side.
+- Expected output: Fast visual ranking of strongest vs weakest zones.
+- API: `GET /api/scores`
 
 ### Feature 4: Morning Briefing (AI + Audio)
 
-- What it does: Generates a daily city briefing script and optional MP3 narration.
-- UI demo: Open `/features/briefing` and press play.
-- Expected result: Headline cards + narration timeline for the current date.
-- Data source: `GET /api/briefing`
+- URL: `/features/briefing`
+- What judges should do: Press play and inspect headline cards.
+- Expected output: Daily script summary + optional narration audio.
+- API: `GET /api/briefing`
 
 ### Feature 5: Proactive Alerts
 
-- What it does: Detects anomalies vs baseline (for example blight spikes, 311 backlog surges).
-- UI demo: Open `/features/alerts`.
-- Expected result: Severity-ranked alert feed (`HIGH`, `MEDIUM`, `LOW`) with recommended actions.
-- Data source: `GET /api/alerts`
+- URL: `/features/alerts`
+- What judges should do: Inspect severity-ranked alerts.
+- Expected output: HIGH/MEDIUM/LOW anomalies with recommended operational actions.
+- API: `GET /api/alerts`
 
 ### Feature 6: Ask CivicPulse (AI Q&A)
 
-- What it does: Answers civic questions with concise, structured responses.
-- UI demo: Open `/features/ask` and ask:
-  `Which neighborhood needs urgent intervention today and why?`
-- Expected result: Summary answer with reasoning and confidence.
-- Data source: `GET /api/query?q=...`
+- URL: `/features/ask`
+- Demo prompt: `Which neighborhood needs urgent intervention today and why?`
+- Expected output: Structured answer with concise civic reasoning.
+- API: `GET /api/query?q=...`
 
 ### Feature 7: Voice + 311 Ticket Agent
 
-- What it does: Conversational assistant that can collect issue details and file service tickets.
-- UI demo: Use the floating `311 Agent` button and say:
-  `Streetlight outage at 123 Oak Street. It feels unsafe at night.`
-- Expected result: Agent requests missing details, then submits a ticket and returns ticket metadata.
-- Data source: `POST /api/voice/session`, `POST /api/ticket`
+- Entry: Floating `311 Agent` button
+- Demo prompt: `Streetlight outage at 123 Oak Street. It feels unsafe at night.`
+- Expected output: Multi-turn intake, then a created ticket response with priority and ETA.
+- APIs: `POST /api/voice/session`, `POST /api/ticket`
 
-## 3. How Scoring Works
+## Scoring Model
 
-Neighborhood score is a weighted composite:
+Each neighborhood score is a weighted composite:
 
 - Safety: 25%
 - Blight: 25%
@@ -91,32 +119,32 @@ Neighborhood score is a weighted composite:
 - Activity: 20%
 - Communications: 10%
 
-Signals are derived from civic records (crime, permits, 311, blight) and city crawl intelligence.
+Inputs come from crime, permits, 311 ticket signals, blight records, and city web updates.
 
-## 4. Architecture
+## System Architecture
 
-- Frontend: Vanilla JS SPA in `public/`
-- Backend: Node.js + Express in `server/`
-- Pipeline: `crawler -> civic fetch -> scoring -> anomalies -> briefing`
-- Cache/Storage: in-memory + `.cache/` persistence
-- AI services (optional/live): Perplexity, Firecrawl, ElevenLabs
+- Frontend: Vanilla JS SPA (`public/`)
+- Backend: Node.js + Express (`server/index.js`)
+- Pipeline flow: `crawler -> civic fetch -> scoring -> anomalies -> briefing`
+- Storage/cache: in-memory + `.cache/` snapshot persistence
+- Optional live AI providers: Perplexity, Firecrawl, ElevenLabs
 
-## 5. Quick Start (Local)
+## Quick Start (Under 5 Minutes)
 
 ### Prerequisites
 
 - Node.js 20+
 - npm 10+
 
-### Setup
+### Setup and Run
 
-1. Install dependencies:
+1. Install dependencies
 
 ```bash
 npm install
 ```
 
-2. Create env file:
+2. Create `.env`
 
 ```bash
 cp .env.example .env
@@ -128,27 +156,27 @@ PowerShell alternative:
 Copy-Item .env.example .env
 ```
 
-3. (Optional but recommended) run one pipeline cycle:
+3. Optional: generate one fresh pipeline snapshot
 
 ```bash
 npm run pipeline
 ```
 
-4. Start app:
+4. Start the app
 
 ```bash
 npm start
 ```
 
-5. Open:
+5. Open in browser
 
 ```text
 http://localhost:8080
 ```
 
-## 6. Judge API Smoke Test
+## Judge Smoke Tests
 
-Run these after `npm start`:
+After startup, run:
 
 ```bash
 curl http://localhost:8080/health
@@ -157,7 +185,7 @@ curl http://localhost:8080/api/alerts
 curl "http://localhost:8080/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F"
 ```
 
-Example ticket creation:
+Sample ticket creation:
 
 ```bash
 curl -X POST http://localhost:8080/api/ticket \
@@ -165,48 +193,60 @@ curl -X POST http://localhost:8080/api/ticket \
   -d '{"type":"Streetlight","address":"123 Oak St","description":"Light out and unsafe at night","residentName":"Judge Demo"}'
 ```
 
-## 7. Environment Variables
+## Deployment
 
-Required for baseline run:
+- Backend (Cloud Run): `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
+- Frontend (Vercel): deploy from `public/` using `public/vercel.json` routing
 
-- `PIPELINE_SECRET` (for protected pipeline trigger)
+If you are reviewing from deployed links, replace placeholders below before final submission:
+
+- Live frontend URL: `<ADD_VERCEL_URL>`
+- Demo video URL: `<ADD_DEMO_VIDEO_URL>`
+- Pitch deck URL: `<ADD_DECK_URL>`
+
+## Environment Variables
+
+Baseline:
+
+- `PIPELINE_SECRET`
 - `PORT` (default `8080`)
 
-Recommended for full live demo quality:
+Recommended for full live quality:
 
 - `FIRECRAWL_API_KEY`
 - `PERPLEXITY_API_KEY`
 - `PERPLEXITY_MODEL` (default `sonar`)
 - `ELEVENLABS_API_KEY`
-- `ELEVENLABS_AGENT_ID` (optional for live voice session)
+- `ELEVENLABS_AGENT_ID` (optional)
 - `SOCRATA_APP_TOKEN` (recommended)
-- `GCS_BUCKET_NAME` (optional cloud snapshot storage)
+- `GCS_BUCKET_NAME` (optional)
 
-If AI keys are missing, the app still runs with fallback behavior for judging.
+The prototype still runs in fallback mode when some AI keys are absent.
 
-## 8. Deployment Snapshot
-
-- Backend (Cloud Run): `civicpulse-backend`
-- Frontend (Vercel): deploy from `public/` with SPA + API proxy rules in `public/vercel.json`
-
-## 9. Repository Structure
+## Repository Layout
 
 ```text
-public/           # SPA frontend
-server/           # Express app + pipeline modules
-scripts/          # Utility scripts (manual pipeline run)
-cloudbuild.yaml   # Cloud Build -> Cloud Run pipeline
-Dockerfile        # Backend container image
+public/           # SPA frontend pages and UI logic
+server/           # API routes and intelligence pipeline
+scripts/          # utility scripts (manual pipeline run)
+cloudbuild.yaml   # CI/CD to Cloud Run
+Dockerfile        # backend container build
 ```
 
-## 10. 3-Minute Judge Demo Flow
+## Submission Checklist
 
-1. Open homepage and show platform overview.
-2. Go to `/features/scores` and explain weighted scoring.
-3. Go to `/features/map` and click low-score neighborhood.
-4. Go to `/features/alerts` and explain anomaly trigger logic.
-5. Go to `/features/briefing` and play daily audio.
-6. Go to `/features/ask` and run one policy-style question.
-7. Open voice assistant and file one sample ticket.
+- Working prototype URL
+- Public GitHub repository
+- Short demo video or live walkthrough
+- Brief presentation describing problem, approach, and impact
 
-This sequence demonstrates data ingestion, analytics, AI reasoning, and action workflow end-to-end.
+## Suggested 3-Minute Judge Demo Script
+
+1. Show `/features/scores` and explain scoring logic.
+2. Show `/features/map` and identify one low-performing neighborhood.
+3. Show `/features/alerts` and connect one anomaly to an operational action.
+4. Show `/features/briefing` and play 10-15 seconds of audio.
+5. Ask one policy question in `/features/ask`.
+6. File one sample ticket through the voice widget.
+
+This sequence demonstrates end-to-end capability: data ingestion, AI reasoning, resident interaction, and actionable city operations.
