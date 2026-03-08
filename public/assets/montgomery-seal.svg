@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="CivicPulse Seal">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a3768"/>
+      <stop offset="100%" stop-color="#0d1731"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="124" height="124" rx="20" fill="url(#g)" stroke="#3f72be" stroke-width="3"/>
+  <circle cx="64" cy="64" r="36" fill="none" stroke="#5ca8ff" stroke-width="4"/>
+  <path d="M64 34 L80 52 L72 52 L72 80 L56 80 L56 52 L48 52 Z" fill="#8bd0ff"/>
+  <circle cx="64" cy="64" r="10" fill="#3dd79f"/>
+</svg>
