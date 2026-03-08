@@ -129,6 +129,28 @@ Inputs come from crime, permits, 311 ticket signals, blight records, and city we
 - Storage/cache: in-memory + `.cache/` snapshot persistence
 - Optional live AI providers: Perplexity, Firecrawl, ElevenLabs
 
+## Diagrams
+
+### Architecture Diagram
+
+![Architecture Diagram](public/Diagrams/Architecture%20Diagram.svg)
+
+### Pipeline Diagram
+
+![Pipeline Diagram](public/Diagrams/Pipeline%20Diagram.svg)
+
+### Use Case Diagram
+
+![Use Case Diagram](public/Diagrams/Use%20Case%20Diagram.svg)
+
+### Sequence Diagram (Ask AI Flow)
+
+![Sequence Diagram (Ask AI Flow)](public/Diagrams/Sequence%20Diagram%20%28Ask%20AI%20Flow%29.svg)
+
+### Deployment Diagram
+
+![Deployment Diagram](public/Diagrams/Deployment%20Diagram.svg)
+
 ## Quick Start (Under 5 Minutes)
 
 ### Prerequisites
