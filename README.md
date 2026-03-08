@@ -2,9 +2,9 @@
 
 AI-powered civic intelligence for Montgomery neighborhoods.
 
-This repository is prepared as a **World Wide Vibes (GenAI Works) hackathon submission**: clear challenge fit, runnable prototype, and judge-focused demo flow.
+This repository contains a complete, runnable civic data platform with a frontend app, backend APIs, and an AI-powered daily intelligence pipeline.
 
-## Hackathon Snapshot
+## Project Snapshot
 
 - Event: GenAI Works World Wide Vibes Hackathon
 - Focus: AI + data solutions for real city challenges
@@ -12,7 +12,7 @@ This repository is prepared as a **World Wide Vibes (GenAI Works) hackathon subm
   - Civic Access & Community Communication
   - Smart Cities, Infrastructure & Public Spaces
   - Public Safety, Emergency Response & City Analytics
-- Submission type: Working prototype + short presentation/demo
+- Project type: Working prototype with live deploy support
 
 ## Problem
 
@@ -28,32 +28,32 @@ CivicPulse unifies public civic signals and AI into one daily decision layer:
 - Morning briefing (text + audio)
 - AI Q&A and voice-first 311 support
 
-## Why This Project Is Competitive
+## Why This Project Matters
 
-This section maps directly to common hackathon judging dimensions.
+The platform is built to be practical for residents, civic organizations, and city operations teams.
 
-### 1) Relevance
+### Relevance
 
 - Uses real Montgomery civic datasets and city-context web updates.
 - Targets practical city operations: backlog triage, neighborhood risk detection, resident communication.
 
-### 2) Execution Quality
+### Execution Quality
 
 - Full-stack app with deployed backend + deploy-ready frontend.
 - End-to-end pipeline: ingest -> score -> alert -> explain -> action.
 - API-first design with deterministic fallback behavior.
 
-### 3) Originality
+### Originality
 
 - Combines civic anomaly detection with explainable neighborhood scoring.
 - Integrates an AI assistant plus voice workflow for service ticket creation.
 
-### 4) Social Impact
+### Social Impact
 
 - Makes neighborhood inequity visible in one view.
 - Enables faster response to high-risk areas and service gaps.
 
-### 5) Commercial Potential
+### Commercial Potential
 
 - Reusable for municipal departments, nonprofits, and civic-tech operators.
 - Can scale city-to-city by swapping dataset connectors and boundaries.
@@ -63,35 +63,35 @@ This section maps directly to common hackathon judging dimensions.
 ### Feature 1: Equity Map
 
 - URL: `/features/map`
-- What judges should do: Click neighborhood polygons.
+- Try this: Click neighborhood polygons.
 - Expected output: Color-coded health status and trend per neighborhood.
 - API: `GET /api/scores`
 
 ### Feature 2: Neighborhood Health Scores
 
 - URL: `/features/scores`
-- What judges should do: Review cards for all neighborhoods.
+- Try this: Review cards for all neighborhoods.
 - Expected output: Composite score, factor breakdown, top pressure points, trend.
 - API: `GET /api/scores`
 
 ### Feature 3: Signal Snapshot Chart
 
 - URL: `/features/chart`
-- What judges should do: Compare neighborhoods side by side.
+- Try this: Compare neighborhoods side by side.
 - Expected output: Fast visual ranking of strongest vs weakest zones.
 - API: `GET /api/scores`
 
 ### Feature 4: Morning Briefing (AI + Audio)
 
 - URL: `/features/briefing`
-- What judges should do: Press play and inspect headline cards.
+- Try this: Press play and inspect headline cards.
 - Expected output: Daily script summary + optional narration audio.
 - API: `GET /api/briefing`
 
 ### Feature 5: Proactive Alerts
 
 - URL: `/features/alerts`
-- What judges should do: Inspect severity-ranked alerts.
+- Try this: Inspect severity-ranked alerts.
 - Expected output: HIGH/MEDIUM/LOW anomalies with recommended operational actions.
 - API: `GET /api/alerts`
 
@@ -174,7 +174,7 @@ npm start
 http://localhost:8080
 ```
 
-## Judge Smoke Tests
+## API Smoke Tests
 
 After startup, run:
 
@@ -190,7 +190,7 @@ Sample ticket creation:
 ```bash
 curl -X POST http://localhost:8080/api/ticket \
   -H "Content-Type: application/json" \
-  -d '{"type":"Streetlight","address":"123 Oak St","description":"Light out and unsafe at night","residentName":"Judge Demo"}'
+  -d '{"type":"Streetlight","address":"123 Oak St","description":"Light out and unsafe at night","residentName":"Demo User"}'
 ```
 
 ## Deployment
@@ -198,7 +198,7 @@ curl -X POST http://localhost:8080/api/ticket \
 - Backend (Cloud Run): `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
 - Frontend (Vercel): deploy from `public/` using `public/vercel.json` routing
 
-If you are reviewing from deployed links, replace placeholders below before final submission:
+Replace placeholders below with your latest public links:
 
 - Live frontend URL: `<ADD_VERCEL_URL>`
 - Demo video URL: `<ADD_DEMO_VIDEO_URL>`
@@ -233,14 +233,14 @@ cloudbuild.yaml   # CI/CD to Cloud Run
 Dockerfile        # backend container build
 ```
 
-## Submission Checklist
+## Release Checklist
 
 - Working prototype URL
 - Public GitHub repository
 - Short demo video or live walkthrough
 - Brief presentation describing problem, approach, and impact
 
-## Suggested 3-Minute Judge Demo Script
+## Suggested 3-Minute Product Tour
 
 1. Show `/features/scores` and explain scoring logic.
 2. Show `/features/map` and identify one low-performing neighborhood.
