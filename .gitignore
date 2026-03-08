@@ -4,3 +4,13 @@ node_modules/
 *.log
 .DS_Store
 Thumbs.db
+
+# Non-runtime docs and scratch artifacts
+PRD_CivicPulse_Montgomery.docx
+both-demos.jsx
+tmp-opendata-*.json
+tmp-opendata-*.html
+
+# Local temporary files
+*.tmp
+*.bak
