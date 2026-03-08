@@ -1584,7 +1584,6 @@ body[data-theme="dark"] .theme-toggle__thumb {
   place-items: center;
   font-weight: 700;
   font-size: 16px;
-  color: #fff;
 }
 .ring-inner {
   width: 42px;
@@ -1594,6 +1593,7 @@ body[data-theme="dark"] .theme-toggle__thumb {
   border: 1px solid var(--border);
   display: grid;
   place-items: center;
+  color: var(--text);
 }
 .score-card h3 {
   font-size: 14px;
