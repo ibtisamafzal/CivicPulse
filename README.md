@@ -131,25 +131,60 @@ Inputs come from crime, permits, 311 ticket signals, blight records, and city we
 
 ## Diagrams
 
-### Architecture Diagram
+These diagrams explain the platform from different perspectives.
+
+| Diagram | Focus | Use It For |
+|---|---|---|
+| Architecture | System components and integrations | Understanding the full stack at a glance |
+| Pipeline | Data and AI processing flow | Following how raw inputs become insights |
+| Use Case | User interactions and feature goals | Explaining product value by persona |
+| Sequence (Ask AI) | Request/response lifecycle | Debugging or presenting query behavior |
+| Deployment | Runtime infrastructure and routing | Explaining production setup |
+
+<details open>
+<summary><strong>1) Architecture Diagram</strong> - frontend, backend, services, and data boundaries</summary>
+
+The architecture diagram shows how users interact with the Vercel-hosted SPA, how API calls reach the Cloud Run backend, and how external AI/data providers are integrated.
 
 ![Architecture Diagram](public/Diagrams/Architecture%20Diagram.svg)
 
-### Pipeline Diagram
+</details>
+
+<details>
+<summary><strong>2) Pipeline Diagram</strong> - ingest, score, enrich, alert, and publish</summary>
+
+This flow illustrates the daily intelligence cycle from ingestion (`crawler` + civic datasets) to scoring, anomaly detection, briefing generation, and API-ready snapshots.
 
 ![Pipeline Diagram](public/Diagrams/Pipeline%20Diagram.svg)
 
-### Use Case Diagram
+</details>
+
+<details>
+<summary><strong>3) Use Case Diagram</strong> - resident and city-team actions</summary>
+
+This diagram maps the core capabilities by actor, including map exploration, alert review, AI Q&A, and ticket creation through voice/text pathways.
 
 ![Use Case Diagram](public/Diagrams/Use%20Case%20Diagram.svg)
 
-### Sequence Diagram (Ask AI Flow)
+</details>
+
+<details>
+<summary><strong>4) Sequence Diagram (Ask AI Flow)</strong> - end-to-end query lifecycle</summary>
+
+The sequence view traces one question from UI input through API orchestration and context retrieval to final formatted response.
 
 ![Sequence Diagram (Ask AI Flow)](public/Diagrams/Sequence%20Diagram%20%28Ask%20AI%20Flow%29.svg)
 
-### Deployment Diagram
+</details>
+
+<details>
+<summary><strong>5) Deployment Diagram</strong> - CI/CD and runtime topology</summary>
+
+This diagram shows the GitHub -> Cloud Build -> Artifact Registry -> Cloud Run path for backend delivery, and Vercel routing for frontend + `/api/*` proxying.
 
 ![Deployment Diagram](public/Diagrams/Deployment%20Diagram.svg)
+
+</details>
 
 ## Quick Start (Under 5 Minutes)
 
