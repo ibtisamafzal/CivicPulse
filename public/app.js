@@ -355,8 +355,8 @@ function renderLanding(app) {
           Empowering residents, leaders, and businesses to build a stronger Montgomery.
         </p>
         <div class="hero__actions">
-          <a class="btn btn--primary btn--lg" data-link="/features/map">Explore the Map</a>
-          <a class="btn btn--secondary btn--lg" data-link="/about">Learn More</a>
+          <a class="btn btn--primary btn--lg hero__cta-btn" data-link="/features/map">Explore the Map</a>
+          <a class="btn btn--secondary btn--lg hero__cta-btn" data-link="/about">Learn More</a>
         </div>
         <div class="hero__stats reveal">
           <div class="hero__stat">

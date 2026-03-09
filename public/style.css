@@ -665,6 +665,10 @@ body[data-theme="dark"] .theme-toggle__thumb {
   gap: var(--space-md);
   flex-wrap: wrap;
 }
+.hero__cta-btn {
+  border-radius: var(--radius-full);
+  line-height: 1.12;
+}
 .hero__stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3906,6 +3910,20 @@ body[data-theme="dark"] .tour-modal {
   }
 }
 
+/* Mobile devices in desktop-site mode can report wide viewports.
+   Tighten hero top offset there without affecting laptop desktop rendering. */
+@media (pointer: coarse) and (min-width: 769px) {
+  .hero {
+    align-items: flex-start;
+    min-height: calc(100vh - var(--nav-height));
+    padding: calc(var(--nav-height) + var(--space-lg)) var(--space-lg)
+      var(--space-2xl);
+  }
+  .hero__content {
+    padding-top: 8px;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --nav-height: 68px;
@@ -3994,12 +4012,14 @@ body[data-theme="dark"] .tour-modal {
     margin-inline: auto;
     gap: 10px;
   }
-  .hero__actions .btn {
-    flex: 0 1 176px;
+  .hero__actions .hero__cta-btn {
+    flex: 0 1 170px;
+    height: 34px;
     min-height: 34px;
-    padding: 6px 14px;
+    max-height: 34px;
+    padding: 0 12px;
     font-size: 11px;
-    line-height: 1.15;
+    line-height: 1;
     border-radius: var(--radius-full);
   }
   .hero {
@@ -4262,12 +4282,14 @@ body[data-theme="dark"] .tour-modal {
     flex-direction: column;
     width: 100%;
   }
-  .hero__actions .btn {
-    width: min(100%, 214px);
-    min-height: 32px;
-    padding: 6px 11px;
+  .hero__actions .hero__cta-btn {
+    width: min(100%, 196px);
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    padding: 0 10px;
     font-size: 11px;
-    line-height: 1.1;
+    line-height: 1;
     border-radius: var(--radius-full);
   }
   .hero__stats {
