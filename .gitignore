@@ -10,7 +10,16 @@ PRD_CivicPulse_Montgomery.docx
 both-demos.jsx
 tmp-opendata-*.json
 tmp-opendata-*.html
+_to_remove
 
 # Local temporary files
 *.tmp
 *.bak
+
+# Video/Remotion related
+video/
+public/video-captures/
+public/assets/briefings/
+out/
+.remotion/
+render.log

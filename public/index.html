@@ -63,7 +63,6 @@
           <span class="nav__link" data-link="/features/briefing">Briefing</span>
           <span class="nav__link" data-link="/features/alerts">Alerts</span>
           <span class="nav__link" data-link="/features/ask">Ask AI</span>
-          <span class="nav__link" data-link="/contact">Contact</span>
         </div>
 
         <div class="nav__actions">
@@ -85,7 +84,14 @@
             </svg>
           </button>
 
-          <a class="btn btn--primary btn--sm nav__cta" data-link="/features/map">Explore Map</a>
+          <button class="btn btn--primary btn--sm nav__cta" id="guide-button">
+            <svg class="guide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Guide
+          </button>
         </div>
 
         <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
@@ -96,30 +102,211 @@
           </svg>
         </button>
       </div>
+
+      <!-- Mobile Menu -->
+      <div class="nav__mobile-menu" id="mobile-menu">
+        <span class="nav__link" data-link="/">Home</span>
+        <span class="nav__link" data-link="/features/map">Map</span>
+        <span class="nav__link" data-link="/features/scores">Scores</span>
+        <span class="nav__link" data-link="/features/briefing">Briefing</span>
+        <span class="nav__link" data-link="/features/alerts">Alerts</span>
+        <span class="nav__link" data-link="/features/ask">Ask AI</span>
+      </div>
     </nav>
 
-    <!-- Mobile Menu -->
-    <div class="nav__mobile-menu" id="mobile-menu">
-      <span class="nav__mobile-link" data-link="/">Home</span>
-      <span class="nav__mobile-link" data-link="/features/map">Equity Map</span>
-      <span class="nav__mobile-link" data-link="/features/scores">Health Scores</span>
-      <span class="nav__mobile-link" data-link="/features/briefing">Morning Briefing</span>
-      <span class="nav__mobile-link" data-link="/features/alerts">Proactive Alerts</span>
-      <span class="nav__mobile-link" data-link="/features/ask">Ask CivicPulse</span>
-      <span class="nav__mobile-link" data-link="/about">About</span>
-      <span class="nav__mobile-link" data-link="/contact">Contact</span>
-      <span class="nav__mobile-link" data-link="/faq">FAQ</span>
+    <!-- ============================== -->
+    <!--        FEATURE TOUR            -->
+    <!-- ============================== -->
+    <div class="tour-overlay" id="tour-overlay">
+      <div class="tour-modal">
+        <button class="tour-modal__close" id="tour-close" aria-label="Close tour">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <div class="tour-slides" id="tour-slides">
+          <!-- Slide 1: Welcome -->
+          <div class="tour-slide tour-slide--active" data-slide="0">
+            <div class="tour-slide__icon">
+              <svg viewBox="0 0 48 48" fill="none">
+                <defs>
+                  <linearGradient id="tour-logo-grad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#3b82f6"/>
+                    <stop offset="100%" stop-color="#06d6a0"/>
+                  </linearGradient>
+                </defs>
+                <rect width="48" height="48" rx="12" fill="url(#tour-logo-grad)" opacity="0.15"/>
+                <path d="M24 10a14 14 0 00-9.9 23.9l1.8-1.8A11.5 11.5 0 1135.5 24h-2.6a8.9 8.9 0 10-8.9 8.9V35.5A14 14 0 0024 10z" fill="url(#tour-logo-grad)"/>
+                <circle cx="24" cy="24" r="4.5" fill="url(#tour-logo-grad)"/>
+              </svg>
+            </div>
+            <h2 class="tour-slide__title">Welcome to CivicPulse</h2>
+            <p class="tour-slide__subtitle">AI-Powered Civic Intelligence for Montgomery, AL</p>
+            <p class="tour-slide__desc">CivicPulse unifies Montgomery's open civic data with AI to deliver daily neighborhood health insights, proactive alerts, and 24/7 intelligent assistance for residents and city teams.</p>
+            
+            <div class="tour-slide__roles">
+              <span class="tour-role-badge">👥 Residents</span>
+              <span class="tour-role-badge">💼 Entrepreneurs</span>
+              <span class="tour-role-badge">🏛️ City Staff</span>
+              <span class="tour-role-badge">🎓 Education</span>
+            </div>
+
+            <div class="tour-slide__highlights">
+              <div class="tour-highlight">
+                <div class="tour-highlight__icon">🗺️</div>
+                <div class="tour-highlight__text">Live Montgomery Open Data from ArcGIS REST APIs — zero mock data</div>
+              </div>
+              <div class="tour-highlight">
+                <div class="tour-highlight__icon">🌐</div>
+                <div class="tour-highlight__text">Web scraping with Firecrawl for city announcements and updates</div>
+              </div>
+              <div class="tour-highlight">
+                <div class="tour-highlight__icon">📊</div>
+                <div class="tour-highlight__text">US Census demographics for workforce and community insights</div>
+              </div>
+              <div class="tour-highlight">
+                <div class="tour-highlight__icon">🤖</div>
+                <div class="tour-highlight__text">Azure OpenAI + Perplexity + ElevenLabs for intelligent analysis</div>
+              </div>
+            </div>
+
+            <div class="tour-slide__tags">
+              <span class="tour-tag tour-tag--primary">🗺️ Montgomery Open Data</span>
+              <span class="tour-tag tour-tag--accent">🌐 Firecrawl Web Scraping</span>
+              <span class="tour-tag tour-tag--success">📊 US Census Data</span>
+              <span class="tour-tag tour-tag--brand">🤖 Multi-AI Stack</span>
+            </div>
+          </div>
+
+          <!-- Slide 2: Equity Map -->
+          <div class="tour-slide" data-slide="1">
+            <div class="tour-slide__badge">Feature 1</div>
+            <div class="tour-slide__icon-sm">🗺️</div>
+            <h2 class="tour-slide__title">Equity Map</h2>
+            <p class="tour-slide__desc">Interactive map color-coded by daily neighborhood health scores. See geographic disparities at a glance with real-time data from Montgomery Open Data.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Color-coded boundaries</div>
+              <div class="tour-feature">✓ Live data refresh</div>
+              <div class="tour-feature">✓ Click for details</div>
+              <div class="tour-feature">✓ Mobile-friendly gestures</div>
+            </div>
+          </div>
+
+          <!-- Slide 3: Health Scores -->
+          <div class="tour-slide" data-slide="2">
+            <div class="tour-slide__badge">Feature 2</div>
+            <div class="tour-slide__icon-sm">📊</div>
+            <h2 class="tour-slide__title">Health Scores</h2>
+            <p class="tour-slide__desc">Composite scores weighted across safety, blight, service quality, activity, and communications — giving you a single number that captures civic health.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ 5-factor weighted scoring</div>
+              <div class="tour-feature">✓ Daily automated updates</div>
+              <div class="tour-feature">✓ Trend direction indicators</div>
+              <div class="tour-feature">✓ Color-coded severity</div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Morning Briefing -->
+          <div class="tour-slide" data-slide="3">
+            <div class="tour-slide__badge">Feature 3</div>
+            <div class="tour-slide__icon-sm">☀️</div>
+            <h2 class="tour-slide__title">Morning Briefing</h2>
+            <p class="tour-slide__desc">AI-generated daily audio and text briefing with ElevenLabs narration. Stay informed about neighborhood changes without digging through raw data.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Auto-generated scripts</div>
+              <div class="tour-feature">✓ Audio narration (ElevenLabs)</div>
+              <div class="tour-feature">✓ Headline cards</div>
+              <div class="tour-feature">✓ Historical archive</div>
+            </div>
+          </div>
+
+          <!-- Slide 5: Proactive Alerts -->
+          <div class="tour-slide" data-slide="4">
+            <div class="tour-slide__badge">Feature 4</div>
+            <div class="tour-slide__icon-sm">🚨</div>
+            <h2 class="tour-slide__title">Proactive Alerts</h2>
+            <p class="tour-slide__desc">Anomaly detection that surfaces issues before they escalate, with severity-based prioritization. Act early, not react late.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Anomaly detection</div>
+              <div class="tour-feature">✓ Severity-based priority</div>
+              <div class="tour-feature">✓ Actionable summaries</div>
+              <div class="tour-feature">✓ Real-time monitoring</div>
+            </div>
+          </div>
+
+          <!-- Slide 6: Ask AI -->
+          <div class="tour-slide" data-slide="5">
+            <div class="tour-slide__badge">Feature 5</div>
+            <div class="tour-slide__icon-sm">💬</div>
+            <h2 class="tour-slide__title">Ask CivicPulse</h2>
+            <p class="tour-slide__desc">AI-powered Q&A about neighborhoods, businesses, and city services — grounded in live civic data and web sources.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Natural language queries</div>
+              <div class="tour-feature">✓ Real-time data integration</div>
+              <div class="tour-feature">✓ Contextual answers</div>
+              <div class="tour-feature">✓ Follow-up questions</div>
+            </div>
+          </div>
+
+          <!-- Slide 7: 311 Voice Agent -->
+          <div class="tour-slide" data-slide="6">
+            <div class="tour-slide__badge">Feature 6</div>
+            <div class="tour-slide__icon-sm">🎙️</div>
+            <h2 class="tour-slide__title">311 Voice Agent</h2>
+            <p class="tour-slide__desc">24/7 conversational AI for filing service tickets, reporting issues, and getting instant answers about city services.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Voice & text interface</div>
+              <div class="tour-feature">✓ Auto ticket creation</div>
+              <div class="tour-feature">✓ Status tracking</div>
+              <div class="tour-feature">✓ 24/7 availability</div>
+            </div>
+          </div>
+
+          <!-- Slide 8: Chart -->
+          <div class="tour-slide" data-slide="7">
+            <div class="tour-slide__badge">Feature 7</div>
+            <div class="tour-slide__icon-sm">📈</div>
+            <h2 class="tour-slide__title">Signal Snapshot Chart</h2>
+            <p class="tour-slide__desc">A clear visual comparison of all neighborhoods side by side. Makes it effortless to identify which communities need attention.</p>
+            <div class="tour-slide__features">
+              <div class="tour-feature">✓ Side-by-side comparison</div>
+              <div class="tour-feature">✓ Color-coded bars</div>
+              <div class="tour-feature">✓ Interactive tooltips</div>
+              <div class="tour-feature">✓ Chart.js powered</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tour-nav">
+          <div class="tour-nav__indicators" id="tour-indicators">
+            <span class="tour-nav__dot tour-nav__dot--active"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+            <span class="tour-nav__dot"></span>
+          </div>
+          <div class="tour-nav__buttons">
+            <button class="btn btn--secondary" id="tour-skip">Skip Tour</button>
+            <button class="btn btn--primary" id="tour-next">Next</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ============================== -->
     <!--        MAIN CONTENT            -->
     <!-- ============================== -->
-    <div id="app"></div>
+    <div id="app" class="app-loading"></div>
 
     <!-- ============================== -->
     <!--        FOOTER                  -->
     <!-- ============================== -->
-    <footer class="footer" id="footer">
+    <footer class="footer footer-loading" id="footer">
       <div class="container">
         <div class="footer__grid">
           <div>

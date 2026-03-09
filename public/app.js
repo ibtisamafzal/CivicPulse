@@ -212,6 +212,25 @@ function handleRoute() {
   app.innerHTML = "";
   app.className = "page-transition";
   render(app);
+  
+  // Remove loading class after render
+  requestAnimationFrame(() => {
+    app.classList.remove("app-loading");
+    // Also show footer after initial render
+    const footer = document.getElementById("footer");
+    if (footer) {
+      footer.classList.remove("footer-loading");
+    }
+  });
+  
+  // Auto-open tour on homepage
+  if (path === "/" || path === "") {
+    setTimeout(() => {
+      if (tourInitialized) {
+        openTour();
+      }
+    }, 500);
+  }
 
   // Update nav active state
   document.querySelectorAll("[data-link]").forEach((el) => {
@@ -2283,10 +2302,140 @@ function setupLinks() {
 }
 
 /* ============================================================
+   FEATURE TOUR
+   ============================================================ */
+let currentTourSlide = 0;
+const totalTourSlides = 8;
+let tourInitialized = false;
+
+function openTour() {
+  const overlay = document.getElementById("tour-overlay");
+  if (!overlay) {
+    console.warn("Tour overlay not found");
+    return;
+  }
+  
+  overlay.classList.add("tour-overlay--visible");
+  document.body.style.overflow = "hidden";
+  currentTourSlide = 0;
+  updateTourSlide();
+}
+
+function closeTour() {
+  const overlay = document.getElementById("tour-overlay");
+  if (!overlay) return;
+  
+  overlay.classList.remove("tour-overlay--visible");
+  document.body.style.overflow = "";
+}
+
+function updateTourSlide() {
+  const slides = document.querySelectorAll(".tour-slide");
+  const indicators = document.querySelectorAll(".tour-nav__dot");
+  const nextBtn = document.getElementById("tour-next");
+  
+  // Update slides
+  slides.forEach((slide, idx) => {
+    slide.classList.toggle("tour-slide--active", idx === currentTourSlide);
+  });
+  
+  // Update indicators
+  indicators.forEach((dot, idx) => {
+    dot.classList.toggle("tour-nav__dot--active", idx === currentTourSlide);
+  });
+  
+  // Update next button text
+  if (nextBtn) {
+    nextBtn.textContent = currentTourSlide === totalTourSlides - 1 ? "Get Started" : "Next";
+  }
+}
+
+function nextTourSlide() {
+  if (currentTourSlide < totalTourSlides - 1) {
+    currentTourSlide++;
+    updateTourSlide();
+  } else {
+    closeTour();
+  }
+}
+
+function prevTourSlide() {
+  if (currentTourSlide > 0) {
+    currentTourSlide--;
+    updateTourSlide();
+  }
+}
+
+function setupTour() {
+  const guideButton = document.getElementById("guide-button");
+  const closeButton = document.getElementById("tour-close");
+  const skipButton = document.getElementById("tour-skip");
+  const nextButton = document.getElementById("tour-next");
+  const overlay = document.getElementById("tour-overlay");
+  const indicators = document.querySelectorAll(".tour-nav__dot");
+  
+  // Open tour on Guide button click
+  if (guideButton) {
+    guideButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      openTour();
+    });
+  }
+  
+  // Close tour
+  if (closeButton) {
+    closeButton.addEventListener("click", closeTour);
+  }
+  
+  if (skipButton) {
+    skipButton.addEventListener("click", closeTour);
+  }
+  
+  // Next slide
+  if (nextButton) {
+    nextButton.addEventListener("click", nextTourSlide);
+  }
+  
+  // Click indicator dots to jump to slide
+  indicators.forEach((dot, idx) => {
+    dot.addEventListener("click", () => {
+      currentTourSlide = idx;
+      updateTourSlide();
+    });
+  });
+  
+  // Close on overlay click (outside modal)
+  if (overlay) {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) {
+        closeTour();
+      }
+    });
+  }
+  
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    const overlay = document.getElementById("tour-overlay");
+    if (!overlay || !overlay.classList.contains("tour-overlay--visible")) return;
+    
+    if (e.key === "Escape") {
+      closeTour();
+    } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      nextTourSlide();
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      prevTourSlide();
+    }
+  });
+  
+  tourInitialized = true;
+}
+
+/* ============================================================
    INIT
    ============================================================ */
 function init() {
   setupThemeToggle();
+  setupTour();
   setupNav();
   setupLinks();
   setupVoiceWidget();

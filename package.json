@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node server/index.js",
-    "pipeline": "node scripts/runPipelineNow.js"
+    "pipeline": "node scripts/runPipelineNow.js",
+    "video:studio": "remotion studio video/index.jsx",
+    "video:render": "remotion render video/index.jsx CivicPulseHackathonDemo out/civicpulse-demo.mp4"
   },
   "engines": {
     "node": ">=20"
@@ -19,6 +21,13 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "node-cron": "^3.0.3",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.434",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.434"
   }
 }
