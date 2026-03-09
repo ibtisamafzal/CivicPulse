@@ -1408,13 +1408,38 @@ function renderContact(app) {
 
   document.getElementById("contact-form").addEventListener("submit", (e) => {
     e.preventDefault();
+
     const btn = document.getElementById("contact-submit");
-    btn.textContent = "Message Sent ✓";
-    btn.style.background = "var(--accent)";
-    setTimeout(() => {
-      btn.textContent = "Send Message";
-      btn.style.background = "";
-    }, 3000);
+    const form = document.getElementById("contact-form");
+    const name = document.getElementById("contact-name").value.trim();
+    const email = document.getElementById("contact-email").value.trim();
+    const subject = document.getElementById("contact-subject").value;
+    const message = document.getElementById("contact-message").value.trim();
+
+    btn.disabled = true;
+    btn.textContent = "Sending...";
+
+    fetchJson("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, subject, message }),
+    })
+      .then(() => {
+        btn.textContent = "Message Sent ✓";
+        btn.style.background = "var(--accent)";
+        form.reset();
+      })
+      .catch(() => {
+        btn.textContent = "Send Failed. Try Again";
+        btn.style.background = "#dc2626";
+      })
+      .finally(() => {
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = "Send Message";
+          btn.style.background = "";
+        }, 3000);
+      });
   });
 }
 

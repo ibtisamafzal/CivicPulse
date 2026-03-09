@@ -222,6 +222,16 @@ Recommended for full live quality:
 - `GCS_BUCKET_NAME` (optional)
 - `VOICE_SESSION_REQUIRE_LIVE` (optional, disables simulated voice fallback)
 
+Contact form email delivery (backend-only):
+
+- `CONTACT_TO_EMAIL` (recipient inbox)
+- `CONTACT_FROM_EMAIL` (sender address used by SMTP)
+- `CONTACT_SMTP_HOST`
+- `CONTACT_SMTP_PORT` (default `587`)
+- `CONTACT_SMTP_SECURE` (`true` for SSL/TLS, usually with port `465`)
+- `CONTACT_SMTP_USER`
+- `CONTACT_SMTP_PASS`
+
 ## Repository Layout
 
 ```text
@@ -236,3 +246,9 @@ Dockerfile        # backend container build
 ## Team
 
 Developed by **GenAI Innovators**.
+
+Team members:
+
+- Muhammad Khaqan Nasir
+- Muhammad Adnan Tariq
+- Muhammad Ibtisam Afzal
