@@ -351,7 +351,7 @@ function renderLanding(app) {
           Neighborhood Intelligence,<br/><span class="text-gradient">Powered by AI</span>
         </h1>
         <p class="hero__subtitle">
-          Real-time civic data transformed into actionable equity insights.
+          Daily-updated civic data transformed into actionable equity insights.
           Empowering residents, leaders, and businesses to build a stronger Montgomery.
         </p>
         <div class="hero__actions">
@@ -401,7 +401,7 @@ function renderLanding(app) {
       <div class="container">
         <div class="cta-section__inner reveal">
           <h2 class="cta-section__title">Ready to explore your neighborhood?</h2>
-          <p class="cta-section__desc">Dive into real-time health scores, alerts, and AI-powered briefings for Montgomery neighborhoods.</p>
+          <p class="cta-section__desc">Dive into daily-updated health scores, alerts, and AI-powered briefings for Montgomery neighborhoods.</p>
           <div class="hero__actions">
             <a class="btn btn--primary btn--lg" data-link="/features/scores">View Scores</a>
             <a class="btn btn--secondary btn--lg" data-link="/faq">Read the FAQ</a>
@@ -446,7 +446,7 @@ function featureCardsHTML() {
       icon: "💬",
       cls: "query",
       title: "Ask CivicPulse",
-      desc: "Perplexity-powered Q&A about neighborhoods, businesses, and city services — backed by live data.",
+      desc: "Perplexity-powered Q&A about neighborhoods, businesses, and city services — backed by latest pipeline data.",
       link: "/features/ask",
     },
     {
@@ -480,11 +480,11 @@ function showcaseSectionsHTML() {
         <div class="showcase reveal">
           <div class="showcase__content">
             <div class="showcase__number">01</div>
-            <h2 class="showcase__title">Real-Time Equity Mapping</h2>
-            <p class="showcase__desc">Our Leaflet-powered map pulls live civic data and overlays neighborhood boundaries with color-coded health scores. Instantly spot areas that need attention and track improvements over time.</p>
+            <h2 class="showcase__title">Daily-Updated Equity Mapping</h2>
+            <p class="showcase__desc">Our Leaflet-powered map pulls the latest civic snapshot and overlays neighborhood boundaries with color-coded health scores. Instantly spot areas that need attention and track improvements over time.</p>
             <div class="showcase__features">
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Color-coded boundaries</span></div>
-              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Live data refresh</span></div>
+              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Daily data refresh</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Click for details</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Mobile-friendly gestures</span></div>
             </div>
@@ -545,7 +545,7 @@ function showcaseSectionsHTML() {
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Auto-generated scripts</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Audio narration</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Headline cards</span></div>
-              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Historical archive</span></div>
+              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Daily briefing snapshots</span></div>
             </div>
             <a class="btn btn--primary" data-link="/features/briefing">Try it now</a>
           </div>
@@ -717,7 +717,7 @@ function showcaseSectionsHTML() {
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Anomaly detection</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Severity-based priority</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Actionable summaries</span></div>
-              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Real-time monitoring</span></div>
+              <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Daily anomaly monitoring</span></div>
             </div>
             <a class="btn btn--primary" data-link="/features/alerts">Try it now</a>
           </div>
@@ -752,8 +752,8 @@ function showcaseSectionsHTML() {
         <div class="showcase showcase--reverse reveal">
           <div class="showcase__content">
             <div class="showcase__number">06</div>
-            <h2 class="showcase__title">Intelligent Q&A with Live Sources</h2>
-            <p class="showcase__desc">Ask any question about Montgomery neighborhoods — business viability, safety trends, service quality — and get AI-synthesized answers grounded in real civic data and live web sources.</p>
+            <h2 class="showcase__title">Intelligent Q&A with Source Links</h2>
+            <p class="showcase__desc">Ask any question about Montgomery neighborhoods — business viability, safety trends, service quality — and get AI-synthesized answers grounded in civic data, with external sources when available.</p>
             <div class="showcase__features">
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Perplexity-powered answers</span></div>
               <div class="showcase__feature-item"><span class="showcase__feature-check">✓</span><span>Source citations</span></div>
@@ -1060,10 +1060,10 @@ function renderFeatureScores(app) {
       <p class="sidebar-text">Each neighborhood score is a weighted composite of five dimensions:</p>
       <div class="breakdown-list">
         <div class="breakdown-item"><span class="breakdown-label">Safety</span><span class="breakdown-weight">25%</span></div>
-        <div class="breakdown-item"><span class="breakdown-label">Blight</span><span class="breakdown-weight">20%</span></div>
+        <div class="breakdown-item"><span class="breakdown-label">Blight</span><span class="breakdown-weight">25%</span></div>
         <div class="breakdown-item"><span class="breakdown-label">Service Quality</span><span class="breakdown-weight">20%</span></div>
         <div class="breakdown-item"><span class="breakdown-label">Civic Activity</span><span class="breakdown-weight">20%</span></div>
-        <div class="breakdown-item"><span class="breakdown-label">Communications</span><span class="breakdown-weight">15%</span></div>
+        <div class="breakdown-item"><span class="breakdown-label">Communications</span><span class="breakdown-weight">10%</span></div>
       </div>
     </div>
     <div class="sidebar-card">
@@ -1192,7 +1192,7 @@ function renderFeatureAsk(app) {
     "💬",
     "query",
     "Ask CivicPulse",
-    "Ask any question about Montgomery. Get AI-synthesized answers grounded in live civic data.",
+    "Ask any question about Montgomery. Get AI-synthesized answers grounded in the latest civic data snapshot.",
     `<div class="panel">
       <div class="panel__header">
         <h2 class="panel__title">AI-Powered Q&A</h2>
@@ -1218,7 +1218,7 @@ function renderFeatureAsk(app) {
     </div>
     <div class="sidebar-card">
       <h3 class="sidebar-card__title">ℹ️ About</h3>
-      <p class="sidebar-text">Answers are generated using Perplexity's Sonar model with context from Montgomery's open data and live web sources. Response includes confidence level and source citations.</p>
+      <p class="sidebar-text">Answers are generated using Perplexity's Sonar model with Montgomery civic data context and external sources when available. Response includes confidence level and source citations.</p>
     </div>`,
   );
   document
@@ -1427,7 +1427,7 @@ function renderFAQ(app) {
     },
     {
       q: "Where does the data come from?",
-      a: "All data comes from publicly available sources — primarily Montgomery's Socrata open data portal, city government websites (crawled via Firecrawl), and enriched with AI research from Perplexity.",
+      a: "All data comes from publicly available sources — primarily Montgomery ArcGIS open data services (with Socrata-compatible discovery support), city government websites crawled via Firecrawl, and AI research from Perplexity.",
     },
     {
       q: "How are health scores calculated?",
@@ -1443,11 +1443,11 @@ function renderFAQ(app) {
     },
     {
       q: "Can I ask questions about specific neighborhoods?",
-      a: "Yes! The 'Ask CivicPulse' feature uses Perplexity's AI to answer any question about Montgomery neighborhoods — from business viability to safety trends — grounded in live data.",
+      a: "Yes. The 'Ask CivicPulse' feature uses Perplexity to answer Montgomery neighborhood questions using the latest civic snapshot and linked external sources when available.",
     },
     {
       q: "What is the 311 Voice Agent?",
-      a: "It's a 24/7 conversational AI that lets residents file service tickets and report issues by voice. When ElevenLabs credentials are configured, it provides a fully interactive voice experience.",
+      a: "It's a 24/7 assistant that lets residents file service tickets and ask city questions by voice or text in the browser. ElevenLabs is used for backend voice session APIs and briefing narration.",
     },
     {
       q: "Is this platform free to use?",
@@ -1878,7 +1878,7 @@ async function handleQuerySubmit(event) {
   if (!query) return;
 
   output.innerHTML =
-    '<p style="color:var(--brand);">Analyzing live sources...</p>';
+    '<p style="color:var(--brand);">Analyzing data sources...</p>';
 
   try {
     const data = await fetchJson(`/api/query?q=${encodeURIComponent(query)}`);

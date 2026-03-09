@@ -62,7 +62,7 @@ Montgomery civic signals are spread across multiple systems. CivicPulse unifies 
 | Morning Briefing | `/features/briefing` | `GET /api/briefing` | Working |
 | Proactive Alerts | `/features/alerts` | `GET /api/alerts` | Working |
 | Ask CivicPulse | `/features/ask` | `GET /api/query?q=...` | Working |
-| Voice Session | Voice widget + `/features/voice` | `POST /api/voice/session` | Works, can fall back to simulated mode |
+| Voice Session API | Backend voice integration endpoint | `POST /api/voice/session` | Working, supports optional live-only mode |
 | Ticket Creation | Voice flow | `POST /api/ticket` | Working |
 
 ## Scoring Model (Implemented)
@@ -149,6 +149,7 @@ Recommended for full quality:
 - `FIRECRAWL_API_KEY`
 - `ELEVENLABS_API_KEY`
 - `ELEVENLABS_AGENT_ID`
+- `VOICE_SESSION_REQUIRE_LIVE` (`true` disables simulated voice-session fallback)
 - `SOCRATA_APP_TOKEN`
 - `GCS_BUCKET_NAME`
 

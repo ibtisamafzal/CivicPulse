@@ -14,6 +14,17 @@ const AGENT_CONFIG = {
   prompt: DEFAULT_PROMPT,
 };
 
+function isStrictModeEnabled(value) {
+  return String(value || "").toLowerCase() === "true";
+}
+
+function normalizeResidentContext(input = {}) {
+  return {
+    residentName: input.residentName || "Resident",
+    neighborhood: input.neighborhood || "Montgomery",
+  };
+}
+
 function briefingAudioUrl(date) {
   return `/assets/briefings/${date}.mp3`;
 }
@@ -78,13 +89,26 @@ async function createConversationWithContext(agentId, residentContext = {}) {
   return response.json();
 }
 
-async function createConversationSession(residentContext = {}) {
+async function createConversationSession(residentContext = {}, options = {}) {
+  const context = normalizeResidentContext(residentContext);
+  const requireLive =
+    Boolean(options.requireLive) ||
+    isStrictModeEnabled(process.env.VOICE_SESSION_REQUIRE_LIVE);
+
   if (!process.env.ELEVENLABS_API_KEY || !AGENT_CONFIG.agent_id) {
+    if (requireLive) {
+      const error = new Error(
+        "Live voice session is required, but ElevenLabs credentials are missing.",
+      );
+      error.code = "VOICE_LIVE_REQUIRED";
+      throw error;
+    }
+
     return {
       sessionUrl: null,
       sessionId: `local-${Date.now()}`,
       simulated: true,
-      context: residentContext,
+      context,
       note: "ElevenLabs credentials are not configured.",
     };
   }
@@ -96,27 +120,44 @@ async function createConversationSession(residentContext = {}) {
         sessionUrl: signedUrl,
         sessionId: `conv-${Date.now()}`,
         simulated: false,
-        context: residentContext,
+        context,
       };
     }
 
     const payload = await createConversationWithContext(
       AGENT_CONFIG.agent_id,
-      residentContext,
+      context,
     );
 
+    const sessionUrl = payload?.session_url || null;
+    if (!sessionUrl && requireLive) {
+      const error = new Error(
+        "Live voice session is required, but ElevenLabs did not return a session URL.",
+      );
+      error.code = "VOICE_LIVE_REQUIRED";
+      throw error;
+    }
+
     return {
-      sessionUrl: payload?.session_url || null,
+      sessionUrl,
       sessionId: payload?.conversation_id || `conv-${Date.now()}`,
       simulated: false,
-      context: residentContext,
+      context,
     };
-  } catch (_error) {
+  } catch (caughtError) {
+    if (requireLive) {
+      const error = new Error(
+        `Live voice session is required, but setup failed: ${caughtError.message}`,
+      );
+      error.code = "VOICE_LIVE_REQUIRED";
+      throw error;
+    }
+
     return {
       sessionUrl: null,
       sessionId: `local-${Date.now()}`,
       simulated: true,
-      context: residentContext,
+      context,
       note: "Fell back to demo mode because ElevenLabs session creation failed.",
     };
   }

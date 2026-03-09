@@ -39,7 +39,7 @@ Limitation:
 | Briefing | Working | `GET /api/briefing` local + live returns script/cards/audio metadata |
 | AI query | Working | `GET /api/query` local + live returns answer + confidence + sources |
 | Ticket filing | Working | `POST /api/ticket` returns ticket ID, priority, ETA |
-| Voice session | Partial | Local can succeed; live endpoint currently falls back to simulated mode |
+| Voice session | Working (hardened) | Supports `requireLive` / live-only mode to return 503 instead of simulated fallback |
 | Scheduler/pipeline | Working | Startup pipeline and cron wiring are present |
 
 ## Judging Criteria Self-Score (Estimated)
@@ -62,14 +62,14 @@ Current verdict: Not yet a clear win, but a strong contender.
 Why not "clear win" yet:
 
 - Submission package is not fully complete in docs (frontend/video/deck public links still need finalization).
-- Live voice endpoint can fall back to simulated mode, which weakens live demo certainty.
+- Live voice endpoint now supports strict live-only mode to prevent simulated fallback during demos.
 - Bright Data bonus signal is currently absent.
 - Full private judging guide criteria/weighting could not be validated from public access.
 
 ## Highest-Impact Fixes Before Submission
 
 1. Publish and include final frontend URL, video URL, and deck URL in README and submission form.
-2. Stabilize `POST /api/voice/session` in production so it returns non-simulated sessions during demos.
+2. Enable strict mode in deployment (`VOICE_SESSION_REQUIRE_LIVE=true`) before final demos.
 3. Add explicit "demo mode" badges in UI where fallbacks are used to keep trust high with judges.
 4. If feasible, add Bright Data integration or provide explicit justification for equivalent scraping stack.
 5. Add a one-page impact summary with measurable outcomes (response-time reduction hypothesis, user personas, deployment path).

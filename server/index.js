@@ -157,10 +157,35 @@ app.post("/api/ticket", (req, res) => {
 });
 
 app.post("/api/voice/session", async (req, res) => {
+  const body = req.body || {};
+  const requireLive =
+    body.requireLive === true ||
+    body.mode === "live-only" ||
+    String(process.env.VOICE_SESSION_REQUIRE_LIVE || "").toLowerCase() ===
+      "true";
+
+  const residentContext = {
+    residentName: body.residentName,
+    neighborhood: body.neighborhood,
+  };
+
   try {
-    const session = await createConversationSession(req.body || {});
+    const session = await createConversationSession(residentContext, {
+      requireLive,
+    });
+
+    if (requireLive && session.simulated) {
+      return res.status(503).json({
+        error:
+          "Live voice session is unavailable right now. Demo fallback is disabled.",
+      });
+    }
+
     return res.json(session);
   } catch (error) {
+    if (error.code === "VOICE_LIVE_REQUIRED") {
+      return res.status(503).json({ error: error.message });
+    }
     return res.status(500).json({ error: error.message });
   }
 });
