@@ -293,8 +293,17 @@ function handleRoute() {
     el.classList.toggle("active", el.dataset.link === path);
   });
 
-  // Close mobile menu
-  document.getElementById("mobile-menu").classList.remove("open");
+  // Close mobile menu and restore body scroll on route transitions.
+  const mobileMenu = document.getElementById("mobile-menu");
+  if (mobileMenu) {
+    mobileMenu.classList.remove("open");
+  }
+  document.body.classList.remove("menu-open");
+  const mobileToggle = document.getElementById("mobile-toggle");
+  if (mobileToggle) {
+    mobileToggle.setAttribute("aria-expanded", "false");
+    mobileToggle.setAttribute("aria-label", "Open menu");
+  }
 
   // Show footer on all pages
   document.getElementById("footer").style.display = "";
@@ -2514,8 +2523,46 @@ function setupNav() {
   // Mobile toggle
   const toggle = document.getElementById("mobile-toggle");
   const mobileMenu = document.getElementById("mobile-menu");
+  const close = document.getElementById("mobile-menu-close");
+  if (!toggle || !mobileMenu) return;
+
+  const setMenuState = (isOpen) => {
+    mobileMenu.classList.toggle("open", isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+    document.body.classList.toggle("menu-open", isOpen);
+
+    if (isOpen && close) {
+      close.focus();
+    } else if (!isOpen && mobileMenu.contains(document.activeElement)) {
+      toggle.focus();
+    }
+  };
+
+  mobileMenu.setAttribute("aria-hidden", "true");
+
   toggle.addEventListener("click", () => {
-    mobileMenu.classList.toggle("open");
+    const nextState = !mobileMenu.classList.contains("open");
+    setMenuState(nextState);
+  });
+
+  if (close) {
+    close.addEventListener("click", () => {
+      setMenuState(false);
+    });
+  }
+
+  mobileMenu.addEventListener("click", (event) => {
+    if (event.target === mobileMenu) {
+      setMenuState(false);
+    }
+  });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mobileMenu.classList.contains("open")) {
+      setMenuState(false);
+    }
   });
 }
 
@@ -2666,6 +2713,15 @@ function setupTour() {
    INIT
    ============================================================ */
 function init() {
+  // Ensure browser refresh starts at top instead of restoring prior scroll.
+  if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+  window.scrollTo(0, 0);
+  window.addEventListener("load", () => window.scrollTo(0, 0), {
+    once: true,
+  });
+
   setupThemeToggle();
   setupTour();
   setupNav();

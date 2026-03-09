@@ -94,7 +94,7 @@
           </button>
         </div>
 
-        <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="12" x2="21" y2="12" />
@@ -105,6 +105,15 @@
 
       <!-- Mobile Menu -->
       <div class="nav__mobile-menu" id="mobile-menu">
+        <div class="nav__mobile-head">
+          <span class="nav__mobile-title">Menu</span>
+          <button class="nav__mobile-close" id="mobile-menu-close" type="button" aria-label="Close menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
         <span class="nav__link" data-link="/">Home</span>
         <span class="nav__link" data-link="/features/map">Map</span>
         <span class="nav__link" data-link="/features/scores">Scores</span>
