@@ -106,25 +106,42 @@ Each neighborhood score is a weighted composite:
 
 ## Diagrams
 
-### Architecture Diagram
+<!-- markdownlint-disable MD033 -->
+<details open>
+<summary><strong>Architecture Diagram</strong></summary>
 
 ![Architecture Diagram](public/Diagrams/Architecture%20Diagram.svg)
 
-### Pipeline Diagram
+</details>
+
+<details>
+<summary><strong>Pipeline Diagram</strong></summary>
 
 ![Pipeline Diagram](public/Diagrams/Pipeline%20Diagram.svg)
 
-### Use Case Diagram
+</details>
+
+<details>
+<summary><strong>Use Case Diagram</strong></summary>
 
 ![Use Case Diagram](public/Diagrams/Use%20Case%20Diagram.svg)
 
-### Sequence Diagram (Ask AI Flow)
+</details>
+
+<details>
+<summary><strong>Sequence Diagram (Ask AI Flow)</strong></summary>
 
 ![Sequence Diagram (Ask AI Flow)](public/Diagrams/Sequence%20Diagram%20%28Ask%20AI%20Flow%29.svg)
 
-### Deployment Diagram
+</details>
+
+<details>
+<summary><strong>Deployment Diagram</strong></summary>
 
 ![Deployment Diagram](public/Diagrams/Deployment%20Diagram.svg)
+
+</details>
+<!-- markdownlint-enable MD033 -->
 
 ## Quick Start (Under 5 Minutes)
 
