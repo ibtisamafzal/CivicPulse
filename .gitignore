@@ -25,3 +25,4 @@ public/assets/briefings/*.mp3
 out/
 .remotion/
 render.log
+.vercel

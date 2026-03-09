@@ -1810,8 +1810,7 @@ function renderBriefing(briefing) {
     if (hasAudio) {
       audio.src = briefing.audio.url;
       audio.load();
-    }
-    else {
+    } else {
       audio.removeAttribute("src");
       audio.load();
     }

@@ -1,73 +1,94 @@
 # CivicPulse Montgomery
 
-AI-powered neighborhood intelligence for Montgomery, Alabama.
+AI-powered civic intelligence for Montgomery neighborhoods.
 
-## Hackathon Summary
+This repository contains a complete, runnable civic data platform with a frontend app, backend APIs, and an AI-powered daily intelligence pipeline.
 
-- Event: GenAI Works World Wide Vibes Hackathon (March 2026)
-- Challenge fit:
-  - Civic Access and Community Communication
-  - Smart Cities, Infrastructure and Public Spaces
-  - Public Safety, Emergency Response and City Analytics
-- Judging criteria (publicly listed): relevance, execution quality, originality, social impact, commercial potential
+## Live Links
 
-## What This Project Solves
+- Frontend URL: `https://civic-pulse-beta.vercel.app`
+- Backend URL: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
+- Demo video URL: `<ADD_DEMO_VIDEO_URL>`
+- Slide deck URL: `<ADD_SLIDE_DECK_URL>`
 
-Montgomery civic signals are spread across multiple systems. CivicPulse unifies those signals into one daily operating view so residents and city teams can identify neighborhood issues faster and act earlier.
+## Project Snapshot
 
-## Core Product Capabilities
+- Event: GenAI Works World Wide Vibes Hackathon
+- Focus: AI + data solutions for real city challenges
+- Selected challenge fit:
+  - Civic Access & Community Communication
+  - Smart Cities, Infrastructure & Public Spaces
+  - Public Safety, Emergency Response & City Analytics
+- Project type: Working prototype with live deploy support
 
-- Neighborhood health scoring across 5 weighted factors
-- Interactive equity map by neighborhood
-- Signal comparison chart
-- Daily AI briefing (script + optional audio)
-- Proactive anomaly alerts
-- AI Q and A over live civic context
-- Voice-first 311 ticket assistant
+## Problem
 
-## Judging-Focused Evidence
+City signals (crime, permits, service requests, blight, announcements) are fragmented across portals. Residents and city teams lose time stitching data together, which delays interventions in neighborhoods that need support most.
 
-### Relevance
+## Solution
 
-- Uses Montgomery civic data sources and city update crawling.
-- Targets operational use cases: service backlog, blight, neighborhood risk, and resident reporting.
+CivicPulse unifies public civic signals and AI into one daily decision layer:
 
-### Execution Quality
+- Neighborhood health scoring
+- Equity map visualization
+- Anomaly-based alerting
+- Morning briefing (text + audio)
+- AI Q&A and voice-first 311 support
 
-- Full-stack working app: Node/Express backend + SPA frontend.
-- Daily pipeline orchestration: crawl -> fetch civic datasets -> score -> detect anomalies -> briefing.
-- Fallback-safe design: app still runs if some providers fail.
+## Features With Demo Examples
 
-### Originality
+### Feature 1: Equity Map
 
-- Combines explainable neighborhood scoring, anomaly detection, and conversational service intake in one civic UX.
+- URL: `/features/map`
+- Try this: Click neighborhood polygons.
+- Expected output: Color-coded health status and trend per neighborhood.
+- API: `GET /api/scores`
 
-### Social Impact
+### Feature 2: Neighborhood Health Scores
 
-- Makes neighborhood inequity visible.
-- Improves response loop for high-risk or under-served areas.
+- URL: `/features/scores`
+- Try this: Review cards for all neighborhoods.
+- Expected output: Composite score, factor breakdown, top pressure points, trend.
+- API: `GET /api/scores`
 
-### Commercial Potential
+### Feature 3: Signal Snapshot Chart
 
-- Replicable architecture for other cities.
-- Municipal, nonprofit, and civic-tech deployment fit.
+- URL: `/features/chart`
+- Try this: Compare neighborhoods side by side.
+- Expected output: Fast visual ranking of strongest vs weakest zones.
+- API: `GET /api/scores`
 
-## Feature-to-Endpoint Map
+### Feature 4: Morning Briefing (AI + Audio)
 
-| Feature | UI Route | API | Status |
-| --- | --- | --- | --- |
-| Equity Map | `/features/map` | `GET /api/scores` | Working |
-| Health Scores | `/features/scores` | `GET /api/scores` | Working |
-| Signal Snapshot | `/features/chart` | `GET /api/scores` | Working |
-| Morning Briefing | `/features/briefing` | `GET /api/briefing` | Working |
-| Proactive Alerts | `/features/alerts` | `GET /api/alerts` | Working |
-| Ask CivicPulse | `/features/ask` | `GET /api/query?q=...` | Working |
-| Voice Session API | Backend voice integration endpoint | `POST /api/voice/session` | Working, supports optional live-only mode |
-| Ticket Creation | Voice flow | `POST /api/ticket` | Working |
+- URL: `/features/briefing`
+- Try this: Press play and inspect headline cards.
+- Expected output: Daily script summary + narration audio when available.
+- API: `GET /api/briefing`
 
-## Scoring Model (Implemented)
+### Feature 5: Proactive Alerts
 
-Weighted neighborhood score:
+- URL: `/features/alerts`
+- Try this: Inspect severity-ranked alerts.
+- Expected output: High/medium/low anomalies with recommended actions.
+- API: `GET /api/alerts`
+
+### Feature 6: Ask CivicPulse (AI Q&A)
+
+- URL: `/features/ask`
+- Demo prompt: `Which neighborhood needs urgent intervention today and why?`
+- Expected output: Structured answer with concise civic reasoning.
+- API: `GET /api/query?q=...`
+
+### Feature 7: Voice + 311 Ticket Agent
+
+- Entry: Floating `311 Agent` button
+- Demo prompt: `Streetlight outage at 123 Oak Street. It feels unsafe at night.`
+- Expected output: Multi-turn intake, then a created ticket response with priority and ETA.
+- APIs: `POST /api/voice/session`, `POST /api/ticket`
+
+## Scoring Model
+
+Each neighborhood score is a weighted composite:
 
 - Safety: 25%
 - Blight: 25%
@@ -75,37 +96,44 @@ Weighted neighborhood score:
 - Activity: 20%
 - Communications: 10%
 
-## Live and Local Verification
+## System Architecture
 
-Verified on 2026-03-09:
+- Frontend: Vanilla JS SPA (`public/`)
+- Backend: Node.js + Express (`server/index.js`)
+- Pipeline flow: `crawler -> civic fetch -> scoring -> anomalies -> briefing`
+- Storage/cache: in-memory + `.cache/` snapshot persistence
+- Optional live AI providers: Perplexity, Firecrawl, ElevenLabs
 
-- Local: `http://localhost:8080/health`, `/api/scores`, `/api/alerts`, `/api/briefing`, `/api/query`, `/api/ticket`
-- Deployed backend: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app/health`, `/api/scores`, `/api/briefing`, `/api/query`, `POST /api/voice/session`
-- Live voice check: `POST /api/voice/session` with `requireLive=true` returns live ElevenLabs session (`simulated: false`)
-- Live briefing audio check: `GET /api/briefing` reports `audio.available=true`; `/assets/briefings/<date>.mp3` serves `audio/mpeg`
-- Demo render artifact exists: `out/civicpulse-demo.mp4`
+## Diagrams
 
-## Submission Assets
+### Architecture Diagram
 
-- Backend URL: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
-- Frontend routing config for Vercel: `public/vercel.json`
-- Demo video source and tooling: `video/README.md`
-- Rendered demo artifact: `out/civicpulse-demo.mp4`
+![Architecture Diagram](public/Diagrams/Architecture%20Diagram.svg)
 
-Before final submission, fill in these links:
+### Pipeline Diagram
 
-- Live frontend URL: `<ADD_FRONTEND_URL>`
-- Public demo video URL: `<ADD_VIDEO_URL>`
-- Pitch deck URL: `<ADD_DECK_URL>`
+![Pipeline Diagram](public/Diagrams/Pipeline%20Diagram.svg)
 
-## Local Run
+### Use Case Diagram
+
+![Use Case Diagram](public/Diagrams/Use%20Case%20Diagram.svg)
+
+### Sequence Diagram (Ask AI Flow)
+
+![Sequence Diagram (Ask AI Flow)](public/Diagrams/Sequence%20Diagram%20%28Ask%20AI%20Flow%29.svg)
+
+### Deployment Diagram
+
+![Deployment Diagram](public/Diagrams/Deployment%20Diagram.svg)
+
+## Quick Start (Under 5 Minutes)
 
 ### Prerequisites
 
 - Node.js 20+
 - npm 10+
 
-### Start
+### Setup and Run
 
 1. Install dependencies.
 
@@ -113,79 +141,78 @@ Before final submission, fill in these links:
 npm install
 ```
 
-1. Copy env file.
+1. Create `.env`.
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-1. Optional: run one manual pipeline pass.
+1. Optional: generate one fresh pipeline snapshot.
 
 ```bash
 npm run pipeline
 ```
 
-1. Start server.
+1. Start the app.
 
 ```bash
 npm start
 ```
 
-1. Open:
+1. Open in browser.
 
 ```text
 http://localhost:8080
 ```
 
+## API Smoke Tests
+
+After startup, run:
+
+```bash
+curl http://localhost:8080/health
+curl http://localhost:8080/api/scores
+curl http://localhost:8080/api/alerts
+curl "http://localhost:8080/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F"
+```
+
+Sample ticket creation:
+
+```bash
+curl -X POST http://localhost:8080/api/ticket \
+  -H "Content-Type: application/json" \
+  -d '{"type":"Streetlight","address":"123 Oak St","description":"Light out and unsafe at night","residentName":"Demo User"}'
+```
+
 ## Environment Variables
 
-Required baseline:
+Baseline:
 
 - `PIPELINE_SECRET`
 - `PORT` (default `8080`)
 
-Recommended for full quality:
+Recommended for full live quality:
 
+- `FIRECRAWL_API_KEY`
 - `PERPLEXITY_API_KEY`
 - `PERPLEXITY_MODEL` (default `sonar`)
-- `FIRECRAWL_API_KEY`
 - `ELEVENLABS_API_KEY`
-- `ELEVENLABS_AGENT_ID`
-- `VOICE_SESSION_REQUIRE_LIVE` (`true` disables simulated voice-session fallback)
-- `SOCRATA_APP_TOKEN`
-- `GCS_BUCKET_NAME`
+- `ELEVENLABS_AGENT_ID` (optional)
+- `SOCRATA_APP_TOKEN` (recommended)
+- `GCS_BUCKET_NAME` (optional)
+- `VOICE_SESSION_REQUIRE_LIVE` (optional, disables simulated voice fallback)
 
-## Architecture
-
-- Frontend: Vanilla JS SPA in `public/`
-- Backend: Express API in `server/index.js`
-- Pipeline: `server/pipeline/`
-- Persistence: in-memory cache + `.cache/` or GCS
-- Deploy: Cloud Run backend + Vercel frontend routing
-
-## Repo Layout
+## Repository Layout
 
 ```text
-public/           SPA client
-server/           API and pipeline
-scripts/          Manual pipeline trigger
-video/            Remotion demo project
-cloudbuild.yaml   Cloud Run CI/CD
-Dockerfile        Backend container
+public/           # SPA frontend pages and UI logic
+server/           # API routes and intelligence pipeline
+scripts/          # utility scripts (manual pipeline run)
+video/            # remotion demo project
+cloudbuild.yaml   # CI/CD to Cloud Run
+Dockerfile        # backend container build
 ```
 
-## Known Gaps Before Final Judging
+## Team
 
-- Frontend public URL is not documented yet in this repository.
-- Judging guide page is partially gated by login, so public criteria were used.
-- Sponsor bonus potential for Bright Data is not explicitly implemented in current runtime stack.
-- Daily generated briefing audio files are runtime artifacts and are ignored from git by pattern.
-
-## Fast 3-Minute Demo Flow
-
-1. Show `/features/scores` and explain scoring factors.
-1. Show `/features/map` and highlight one low-score neighborhood.
-1. Show `/features/alerts` and recommended action.
-1. Show `/features/briefing` and play audio if available.
-1. Ask one high-value question in `/features/ask`.
-1. File one sample issue through the voice widget.
+Developed by **GenAI Innovators**.
