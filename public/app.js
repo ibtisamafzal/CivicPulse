@@ -1807,7 +1807,10 @@ function renderBriefing(briefing) {
       ? `Audio ready via ${briefing.audio.provider || "provider"}`
       : "Audio unavailable";
   if (audio) {
-    if (hasAudio) audio.src = briefing.audio.url;
+    if (hasAudio) {
+      audio.src = briefing.audio.url;
+      audio.load();
+    }
     else {
       audio.removeAttribute("src");
       audio.load();
@@ -1840,6 +1843,7 @@ function renderBriefing(briefing) {
 function setupBriefingAudioPlayer() {
   const play = document.getElementById("briefing-play");
   const audio = document.getElementById("briefing-audio");
+  const audioStatus = document.getElementById("briefing-audio-status");
   if (!play || !audio) return;
   if (play.dataset.bound === "true") return;
 
@@ -1855,6 +1859,10 @@ function setupBriefingAudioPlayer() {
       play.textContent = "Pause briefing";
     } catch {
       play.textContent = "Play briefing";
+      if (audioStatus) {
+        audioStatus.textContent =
+          "Audio failed to start. Refresh and try again.";
+      }
     }
   });
   audio.addEventListener("ended", () => {
@@ -1862,6 +1870,14 @@ function setupBriefingAudioPlayer() {
   });
   audio.addEventListener("pause", () => {
     if (!audio.ended) play.textContent = "Play briefing";
+  });
+  audio.addEventListener("error", () => {
+    play.textContent = "Play briefing";
+    play.disabled = true;
+    if (audioStatus) {
+      audioStatus.textContent =
+        "Audio file could not be loaded from this deployment.";
+    }
   });
   play.dataset.bound = "true";
 }
