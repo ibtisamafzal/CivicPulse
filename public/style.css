@@ -3995,11 +3995,12 @@ body[data-theme="dark"] .tour-modal {
     gap: 10px;
   }
   .hero__actions .btn {
-    flex: 0 1 188px;
-    min-height: 38px;
-    padding: 8px 14px;
-    font-size: 12px;
-    border-radius: var(--radius-md);
+    flex: 0 1 176px;
+    min-height: 34px;
+    padding: 6px 14px;
+    font-size: 11px;
+    line-height: 1.15;
+    border-radius: var(--radius-full);
   }
   .hero {
     align-items: flex-start;
@@ -4262,11 +4263,12 @@ body[data-theme="dark"] .tour-modal {
     width: 100%;
   }
   .hero__actions .btn {
-    width: min(100%, 248px);
-    min-height: 36px;
-    padding: 7px 12px;
-    font-size: 12px;
-    border-radius: var(--radius-md);
+    width: min(100%, 214px);
+    min-height: 32px;
+    padding: 6px 11px;
+    font-size: 11px;
+    line-height: 1.1;
+    border-radius: var(--radius-full);
   }
   .hero__stats {
     grid-template-columns: 1fr;
