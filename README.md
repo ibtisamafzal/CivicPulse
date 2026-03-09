@@ -35,6 +35,8 @@ CivicPulse unifies public civic signals and AI into one daily decision layer:
 - Morning briefing (text + audio)
 - AI Q&A and voice-first 311 support
 
+![CivicPulse Infographic](public/Diagrams/CivicPulse%20Infographics.png)
+
 ## Features With Demo Examples
 
 ### Feature 1: Equity Map
@@ -142,12 +144,6 @@ Each neighborhood score is a weighted composite:
 
 </details>
 
-<details>
-<summary><strong>CivicPulse Infographic</strong></summary>
-
-![CivicPulse Infographic](public/Diagrams/CivicPulse%20Infographics.png)
-
-</details>
 <!-- markdownlint-enable MD033 -->
 
 ## Quick Start (Under 5 Minutes)
