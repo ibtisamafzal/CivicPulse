@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.static(path.join(process.cwd(), "public")));
 
 function requirePipelineSecret(req, res, next) {
-  const expected = process.env.PIPELINE_SECRET;
+  const expected = String(process.env.PIPELINE_SECRET || "").trim();
   if (!expected) {
     return next();
   }

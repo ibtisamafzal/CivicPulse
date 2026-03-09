@@ -91,7 +91,7 @@ async function scrapeUrl(app, url) {
 }
 
 async function crawlCity() {
-  const apiKey = process.env.FIRECRAWL_API_KEY;
+  const apiKey = String(process.env.FIRECRAWL_API_KEY || "").trim();
   if (!apiKey) {
     return getMockCrawlData();
   }

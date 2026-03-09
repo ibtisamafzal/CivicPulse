@@ -4,13 +4,17 @@ const path = require("node:path");
 const DEFAULT_PROMPT =
   "You are CivicPulse, Montgomery's 24/7 city assistant. Help residents report issues, get city information, and navigate services. Always confirm ticket numbers when filing reports.";
 
-const TTS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM";
+function envTrim(name) {
+  return String(process.env[name] || "").trim();
+}
+
+const TTS_VOICE_ID = envTrim("ELEVENLABS_VOICE_ID") || "21m00Tcm4TlvDq8ikWAM";
 const TTS_MODEL_ID =
-  process.env.ELEVENLABS_TTS_MODEL_ID || "eleven_multilingual_v2";
+  envTrim("ELEVENLABS_TTS_MODEL_ID") || "eleven_multilingual_v2";
 const BRIEFINGS_DIR = path.join(process.cwd(), "public", "assets", "briefings");
 
 const AGENT_CONFIG = {
-  agent_id: process.env.ELEVENLABS_AGENT_ID,
+  agent_id: envTrim("ELEVENLABS_AGENT_ID"),
   prompt: DEFAULT_PROMPT,
 };
 
@@ -50,7 +54,7 @@ async function createSignedConversationUrl(agentId) {
   const response = await fetch(url, {
     method: "GET",
     headers: {
-      "xi-api-key": process.env.ELEVENLABS_API_KEY,
+      "xi-api-key": envTrim("ELEVENLABS_API_KEY"),
       Accept: "application/json",
     },
   });
@@ -69,7 +73,7 @@ async function createConversationWithContext(agentId, residentContext = {}) {
     {
       method: "POST",
       headers: {
-        "xi-api-key": process.env.ELEVENLABS_API_KEY,
+        "xi-api-key": envTrim("ELEVENLABS_API_KEY"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -95,7 +99,7 @@ async function createConversationSession(residentContext = {}, options = {}) {
     Boolean(options.requireLive) ||
     isStrictModeEnabled(process.env.VOICE_SESSION_REQUIRE_LIVE);
 
-  if (!process.env.ELEVENLABS_API_KEY || !AGENT_CONFIG.agent_id) {
+  if (!envTrim("ELEVENLABS_API_KEY") || !AGENT_CONFIG.agent_id) {
     if (requireLive) {
       const error = new Error(
         "Live voice session is required, but ElevenLabs credentials are missing.",
@@ -175,7 +179,7 @@ async function synthesizeBriefingAudio({ date, script }) {
     };
   }
 
-  if (!process.env.ELEVENLABS_API_KEY) {
+  if (!envTrim("ELEVENLABS_API_KEY")) {
     return {
       url: briefingAudioUrl(date),
       available: false,
@@ -205,7 +209,7 @@ async function synthesizeBriefingAudio({ date, script }) {
       {
         method: "POST",
         headers: {
-          "xi-api-key": process.env.ELEVENLABS_API_KEY,
+          "xi-api-key": envTrim("ELEVENLABS_API_KEY"),
           "Content-Type": "application/json",
           Accept: "audio/mpeg",
         },

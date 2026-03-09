@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = process.env.PERPLEXITY_MODEL || "sonar";
+const DEFAULT_MODEL = String(process.env.PERPLEXITY_MODEL || "sonar").trim();
 
 function parsePossibleJson(rawContent) {
   const raw = String(rawContent || "").trim();
@@ -64,7 +64,7 @@ function fallbackEnrichment(neighborhood, scoreData) {
 }
 
 async function queryPerplexity(messages) {
-  const apiKey = process.env.PERPLEXITY_API_KEY;
+  const apiKey = String(process.env.PERPLEXITY_API_KEY || "").trim();
   if (!apiKey) {
     return null;
   }

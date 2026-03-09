@@ -64,7 +64,6 @@ const FALLBACK_BOUNDARIES = {
 let map,
   mapBaseLayer,
   chart,
-  briefingPlayerBound = false,
   mapScoresCache = [],
   mapLayerIndex = new Map(),
   activeMapFilter = "all";
@@ -1839,10 +1838,10 @@ function renderBriefing(briefing) {
 }
 
 function setupBriefingAudioPlayer() {
-  if (briefingPlayerBound) return;
   const play = document.getElementById("briefing-play");
   const audio = document.getElementById("briefing-audio");
   if (!play || !audio) return;
+  if (play.dataset.bound === "true") return;
 
   play.addEventListener("click", async () => {
     if (!audio.src) return;
@@ -1864,7 +1863,7 @@ function setupBriefingAudioPlayer() {
   audio.addEventListener("pause", () => {
     if (!audio.ended) play.textContent = "Play briefing";
   });
-  briefingPlayerBound = true;
+  play.dataset.bound = "true";
 }
 
 /* ============================================================

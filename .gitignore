@@ -19,7 +19,9 @@ _to_remove
 # Video/Remotion related
 video/
 public/video-captures/
-public/assets/briefings/
+# Generated runtime briefing audio files
+public/assets/briefings/*.mp3
+!public/assets/briefings/.gitkeep
 out/
 .remotion/
 render.log

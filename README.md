@@ -80,7 +80,9 @@ Weighted neighborhood score:
 Verified on 2026-03-09:
 
 - Local: `http://localhost:8080/health`, `/api/scores`, `/api/alerts`, `/api/briefing`, `/api/query`, `/api/ticket`
-- Deployed backend: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app/health`, `/api/scores`, `/api/briefing`, `/api/query`
+- Deployed backend: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app/health`, `/api/scores`, `/api/briefing`, `/api/query`, `POST /api/voice/session`
+- Live voice check: `POST /api/voice/session` with `requireLive=true` returns live ElevenLabs session (`simulated: false`)
+- Live briefing audio check: `GET /api/briefing` reports `audio.available=true`; `/assets/briefings/<date>.mp3` serves `audio/mpeg`
 - Demo render artifact exists: `out/civicpulse-demo.mp4`
 
 ## Submission Assets
@@ -177,6 +179,7 @@ Dockerfile        Backend container
 - Frontend public URL is not documented yet in this repository.
 - Judging guide page is partially gated by login, so public criteria were used.
 - Sponsor bonus potential for Bright Data is not explicitly implemented in current runtime stack.
+- Daily generated briefing audio files are runtime artifacts and are ignored from git by pattern.
 
 ## Fast 3-Minute Demo Flow
 

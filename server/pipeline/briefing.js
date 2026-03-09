@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = process.env.PERPLEXITY_MODEL || "sonar";
+const DEFAULT_MODEL = String(process.env.PERPLEXITY_MODEL || "sonar").trim();
 const { synthesizeBriefingAudio } = require("../voice");
 
 function countNeighborhoodTrend(scores = [], predicate) {
@@ -139,7 +139,7 @@ function normalizeHeadlineCards(headlines = []) {
 }
 
 async function queryPerplexity(messages) {
-  const apiKey = process.env.PERPLEXITY_API_KEY;
+  const apiKey = String(process.env.PERPLEXITY_API_KEY || "").trim();
   if (!apiKey) {
     return null;
   }

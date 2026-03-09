@@ -46,30 +46,41 @@ Limitation:
 
 Scale used: 1-10 per category, equal-weight average because full private weighting was not available.
 
+Scoring below reflects currently deployed behavior observed on 2026-03-09.
+
 | Category | Score (10) | Rationale |
 | --- | --- | --- |
 | Relevance | 8.8 | Strong fit to Montgomery civic operations and challenge themes |
-| Execution Quality | 8.2 | Full stack, deployable, verified APIs; some partial fallbacks still active |
+| Execution Quality | 8.6 | Full stack works end-to-end; live voice session and briefing audio are verified in production |
 | Originality | 7.8 | Strong integrated experience, but some elements are familiar civic-tech patterns |
 | Social Impact | 8.4 | Clear benefit for transparency and faster neighborhood response |
 | Commercial Potential | 7.9 | Transferable city-to-city model; would benefit from stronger GTM clarity |
-| Overall (avg) | 8.2 | Strong contender |
+| Overall (avg) | 8.3 | Strong contender, closer to finalist profile |
+
+Submission-ready target (after quick, low-risk fixes): 8.6-8.8 overall.
+
+## Quick Score Lift Plan (No Functionality Risk)
+
+1. Fill final submission links in `README.md` (`frontend`, `video`, `deck`) and include them in the hackathon form.
+2. Add one concise "impact metrics" slide (problem size, who benefits, expected response-time improvement).
+3. Add one backup screenshot/GIF for briefing audio playback in case live network issues occur during judging.
+4. Keep `VOICE_SESSION_REQUIRE_LIVE=true` enabled for demo environments.
+5. Add a short architecture diagram to improve execution clarity in judging review.
 
 ## Clear Win Verdict
 
-Current verdict: Not yet a clear win, but a strong contender.
+Current verdict: Strong contender trending toward clear-win territory after production voice/audio fixes.
 
 Why not "clear win" yet:
 
 - Submission package is not fully complete in docs (frontend/video/deck public links still need finalization).
-- Live voice endpoint now supports strict live-only mode to prevent simulated fallback during demos.
 - Bright Data bonus signal is currently absent.
 - Full private judging guide criteria/weighting could not be validated from public access.
 
 ## Highest-Impact Fixes Before Submission
 
 1. Publish and include final frontend URL, video URL, and deck URL in README and submission form.
-2. Enable strict mode in deployment (`VOICE_SESSION_REQUIRE_LIVE=true`) before final demos.
+2. Keep strict mode enabled in deployment (`VOICE_SESSION_REQUIRE_LIVE=true`) for final demos.
 3. Add explicit "demo mode" badges in UI where fallbacks are used to keep trust high with judges.
 4. If feasible, add Bright Data integration or provide explicit justification for equivalent scraping stack.
 5. Add a one-page impact summary with measurable outcomes (response-time reduction hypothesis, user personas, deployment path).
@@ -78,4 +89,4 @@ Why not "clear win" yet:
 
 Everything core needed for a valid submission is present and mostly working.
 
-Win readiness is high, but "clear win" confidence improves significantly after final submission-link completion, production voice reliability, and stronger bonus/impact positioning.
+Win readiness is high, and "clear win" confidence now mainly depends on final submission-link completion plus stronger bonus/impact positioning.
