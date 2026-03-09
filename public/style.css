@@ -3913,6 +3913,12 @@ body[data-theme="dark"] .tour-modal {
 /* Mobile devices in desktop-site mode can report wide viewports.
    Tighten hero top offset there without affecting laptop desktop rendering. */
 @media (pointer: coarse) and (min-width: 769px) {
+  .nav__inner {
+    padding: 0 var(--space-md);
+  }
+  .section {
+    padding: var(--space-2xl) 0;
+  }
   .hero {
     align-items: flex-start;
     min-height: calc(100vh - var(--nav-height));
@@ -3921,6 +3927,28 @@ body[data-theme="dark"] .tour-modal {
   }
   .hero__content {
     padding-top: 8px;
+    max-width: 760px;
+  }
+  .hero__title {
+    font-size: clamp(38px, 6vw, 58px);
+  }
+  .hero__subtitle {
+    font-size: clamp(17px, 2.2vw, 20px);
+    max-width: 620px;
+  }
+  .hero__actions {
+    margin-top: 8px;
+  }
+  .hero__stats {
+    max-width: 700px;
+    margin-top: var(--space-xl);
+    gap: 12px;
+  }
+  .voice-fab {
+    bottom: max(18px, env(safe-area-inset-bottom));
+  }
+  .scroll-top {
+    bottom: calc(max(18px, env(safe-area-inset-bottom)) + 62px);
   }
 }
 
@@ -4275,8 +4303,11 @@ body[data-theme="dark"] .tour-modal {
     align-items: center;
   }
   .hero__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-top: calc(var(--space-lg) + 2px);
-    gap: var(--space-sm);
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
   }
   .hero__actions {
     flex-direction: column;
@@ -4292,9 +4323,23 @@ body[data-theme="dark"] .tour-modal {
     line-height: 1;
     border-radius: var(--radius-full);
   }
-  .hero__stats {
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
+  .hero__stat {
+    min-height: 84px;
+    padding: 9px 6px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero__stat-value {
+    font-size: clamp(22px, 7.2vw, 28px);
+    line-height: 1;
+  }
+  .hero__stat-label {
+    font-size: 10px;
+    margin-top: 4px;
+    line-height: 1.25;
   }
   .panel {
     padding: var(--space-md);

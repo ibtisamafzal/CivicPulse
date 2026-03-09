@@ -1317,7 +1317,7 @@ function renderAbout(app) {
             <div class="about-card reveal reveal-delay-2">
               <div class="about-card__icon">⚡</div>
               <h3 class="about-card__title">How It Works</h3>
-              <p class="about-card__desc">Our automated pipeline crawls city portals, Socrata open data, and news sources daily — scoring, analyzing, and generating actionable briefings powered by advanced AI.</p>
+              <p class="about-card__desc">Our automated pipeline ingests Montgomery ArcGIS REST + Socrata civic datasets, crawls city updates with Firecrawl, then scores and summarizes neighborhood conditions daily.</p>
             </div>
             <div class="about-card reveal reveal-delay-3">
               <div class="about-card__icon">🔓</div>
@@ -1327,27 +1327,27 @@ function renderAbout(app) {
             <div class="about-card reveal reveal-delay-4">
               <div class="about-card__icon">🤖</div>
               <h3 class="about-card__title">AI-Powered</h3>
-              <p class="about-card__desc">Perplexity, ElevenLabs, and Firecrawl power our research, voice, and data pipeline respectively — making CivicPulse smarter every day.</p>
+              <p class="about-card__desc">Perplexity powers research/Q&A, ElevenLabs powers voice sessions and TTS, and Firecrawl powers web ingestion from city pages used in the daily pipeline.</p>
             </div>
           </div>
 
           <div class="team-section reveal">
-            <h2 class="team-section__title">Built for Montgomery</h2>
+            <h2 class="team-section__title">Verified Tech Stack In Use</h2>
             <div class="team-grid">
               <div class="team-card">
-                <div class="team-card__avatar">🏛️</div>
-                <div class="team-card__name">Open Data</div>
-                <div class="team-card__role">Socrata city datasets</div>
+                <div class="team-card__avatar">🗂️</div>
+                <div class="team-card__name">Data Sources</div>
+                <div class="team-card__role">ArcGIS REST + Socrata open data</div>
               </div>
               <div class="team-card">
-                <div class="team-card__avatar">🧠</div>
-                <div class="team-card__name">AI Research</div>
-                <div class="team-card__role">Perplexity sonar</div>
+                <div class="team-card__avatar">🧩</div>
+                <div class="team-card__name">App Stack</div>
+                <div class="team-card__role">Node.js/Express, Vanilla JS, Leaflet, Chart.js</div>
               </div>
               <div class="team-card">
                 <div class="team-card__avatar">🎙️</div>
-                <div class="team-card__name">Voice</div>
-                <div class="team-card__role">ElevenLabs conversational AI</div>
+                <div class="team-card__name">AI + Automation</div>
+                <div class="team-card__role">Perplexity, Firecrawl, ElevenLabs, node-cron</div>
               </div>
             </div>
           </div>
