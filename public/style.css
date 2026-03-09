@@ -3525,6 +3525,7 @@ body[data-theme="dark"] .map-spot-card {
   position: relative;
   width: 100%;
   max-width: 740px;
+  height: min(86dvh, 840px);
   max-height: min(86dvh, 840px);
   background: linear-gradient(170deg, var(--surface), var(--surface-alt));
   border-radius: var(--radius-xl);
@@ -3576,7 +3577,7 @@ body[data-theme="dark"] .map-spot-card {
   overflow-y: auto;
   overflow-x: hidden;
   padding: var(--space-2xl) var(--space-xl) var(--space-lg);
-  min-height: 400px;
+  min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
@@ -3600,6 +3601,7 @@ body[data-theme="dark"] .map-spot-card {
 
 .tour-slide {
   display: none;
+  min-height: 100%;
   animation: tourSlideIn 0.5s var(--ease-out);
 }
 
@@ -3988,15 +3990,16 @@ body[data-theme="dark"] .tour-modal {
   }
   .hero__actions {
     width: 100%;
-    max-width: 460px;
+    max-width: 420px;
     margin-inline: auto;
-    gap: 12px;
+    gap: 10px;
   }
   .hero__actions .btn {
-    flex: 0 1 210px;
-    min-height: var(--touch-target);
-    padding: 10px 18px;
-    font-size: 13px;
+    flex: 0 1 188px;
+    min-height: 38px;
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: var(--radius-md);
   }
   .hero {
     align-items: flex-start;
@@ -4079,30 +4082,60 @@ body[data-theme="dark"] .tour-modal {
   }
   .footer__grid {
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
     text-align: center;
   }
   .footer__grid > div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: min(100%, 440px);
+    margin: 0 auto;
     gap: 10px;
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    background: linear-gradient(170deg, var(--surface), var(--surface-alt));
+    box-shadow: var(--shadow-sm);
   }
   .footer__brand {
+    font-size: 21px;
     justify-content: center;
   }
   .footer__brand-desc {
+    max-width: 38ch;
     margin: 0 auto;
   }
   .footer__col-title {
+    font-size: 12px;
     margin-bottom: 0;
   }
   .footer__links {
+    width: 100%;
     align-items: center;
+    gap: 6px;
+  }
+  .footer__link {
+    width: 100%;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    background: var(--surface);
+  }
+  .footer__link:hover,
+  .footer__link.active {
+    border-color: var(--border);
+    background: var(--hover-overlay);
   }
   .footer__bottom {
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 6px;
+    padding-top: var(--space-md);
     text-align: center;
   }
   .contact-info {
@@ -4122,6 +4155,7 @@ body[data-theme="dark"] .tour-modal {
     padding: var(--space-sm);
   }
   .tour-modal {
+    height: min(92dvh, 920px);
     max-width: 100%;
     max-height: min(92dvh, 920px);
   }
@@ -4136,6 +4170,32 @@ body[data-theme="dark"] .tour-modal {
     --nav-height: 64px;
     --space-3xl: 56px;
     --space-4xl: 68px;
+  }
+  .footer {
+    padding: var(--space-xl) 0 var(--space-lg);
+  }
+  .footer__grid {
+    gap: 10px;
+  }
+  .footer__grid > div {
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: var(--radius-md);
+  }
+  .footer__brand {
+    font-size: 19px;
+  }
+  .footer__brand-desc {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .footer__link {
+    min-height: 38px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+  .footer__bottom {
+    font-size: 12px;
   }
   .btn {
     padding: 10px 18px;
@@ -4190,7 +4250,7 @@ body[data-theme="dark"] .tour-modal {
     line-height: 1.8;
   }
   .hero__actions {
-    gap: 10px;
+    gap: 8px;
     align-items: center;
   }
   .hero__stats {
@@ -4202,8 +4262,11 @@ body[data-theme="dark"] .tour-modal {
     width: 100%;
   }
   .hero__actions .btn {
-    width: min(100%, 286px);
-    min-height: 40px;
+    width: min(100%, 248px);
+    min-height: 36px;
+    padding: 7px 12px;
+    font-size: 12px;
+    border-radius: var(--radius-md);
   }
   .hero__stats {
     grid-template-columns: 1fr;
@@ -4273,6 +4336,7 @@ body[data-theme="dark"] .tour-modal {
       max(var(--space-sm), env(safe-area-inset-left));
   }
   .tour-modal {
+    height: calc(100dvh - 12px);
     max-height: calc(100dvh - 12px);
     border-radius: var(--radius-md);
   }
