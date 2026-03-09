@@ -8,8 +8,8 @@ This repository contains a complete, runnable civic data platform with a fronten
 
 - Frontend URL: `https://civic-pulse-beta.vercel.app`
 - Backend URL: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
-- Demo video URL: `<ADD_DEMO_VIDEO_URL>`
-- Slide deck URL: `<ADD_SLIDE_DECK_URL>`
+- Demo video URL: `https://drive.google.com/file/d/16QAQ489DDDPkT-jdtqzQuXVmaKlp8Pwu/view?usp=sharing`
+- Slide deck URL: `https://drive.google.com/file/d/1lFeyBEUfZHFUD3hxVISANVIgECz5P7iP/view?usp=sharing`
 
 ## Project Snapshot
 
@@ -139,6 +139,13 @@ Each neighborhood score is a weighted composite:
 <summary><strong>Deployment Diagram</strong></summary>
 
 ![Deployment Diagram](public/Diagrams/Deployment%20Diagram.svg)
+
+</details>
+
+<details>
+<summary><strong>CivicPulse Infographic</strong></summary>
+
+![CivicPulse Infographic](public/Diagrams/CivicPulse%20Infographics.png)
 
 </details>
 <!-- markdownlint-enable MD033 -->
