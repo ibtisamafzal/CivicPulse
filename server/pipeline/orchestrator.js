@@ -6,8 +6,20 @@ const { buildMorningBriefing } = require("./briefing");
 const { saveDailySnapshot, loadDailySnapshot } = require("../storage");
 const { setSnapshot, getLatestSnapshot } = require("../cache");
 
+const PIPELINE_TIMEZONE = process.env.CIVICPULSE_TZ || "America/Chicago";
+const pipelineDateFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: PIPELINE_TIMEZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
 function isoDate(date = new Date()) {
-  return date.toISOString().slice(0, 10);
+  const parts = pipelineDateFormatter.formatToParts(date);
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+  return `${year}-${month}-${day}`;
 }
 
 function buildBaselineFromPrevious(previousSnapshot) {

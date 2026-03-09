@@ -1,7 +1,8 @@
 const cron = require("node-cron");
 
 function startScheduler(runPipeline) {
-  const timezone = process.env.TZ || "America/Chicago";
+  const timezone =
+    process.env.CIVICPULSE_TZ || process.env.TZ || "America/Chicago";
 
   const task = cron.schedule(
     "0 2 * * *",

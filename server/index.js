@@ -170,6 +170,9 @@ app.get("*", (_req, res) => {
 });
 
 app.listen(port, async () => {
+  const schedulerTimezone =
+    process.env.CIVICPULSE_TZ || process.env.TZ || "America/Chicago";
+
   console.log(`[civicpulse] server listening on http://localhost:${port}`);
 
   try {
@@ -180,5 +183,5 @@ app.listen(port, async () => {
   }
 
   startScheduler(runPipeline);
-  console.log("[civicpulse] scheduler active at 02:00 America/Chicago");
+  console.log(`[civicpulse] scheduler active at 02:00 ${schedulerTimezone}`);
 });

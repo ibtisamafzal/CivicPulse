@@ -6,6 +6,27 @@
 /* ─── Constants ─── */
 const SCORE_COLORS = { high: "#06d6a0", medium: "#f59e0b", low: "#ef4444" };
 const THEME_STORAGE_KEY = "civicpulse-theme";
+const MONTGOMERY_TIMEZONE = "America/Chicago";
+
+const montgomeryDateFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: MONTGOMERY_TIMEZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+const montgomeryTimeFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: MONTGOMERY_TIMEZONE,
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+const montgomeryTimeWithZoneFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: MONTGOMERY_TIMEZONE,
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZoneName: "short",
+});
 
 const FALLBACK_BOUNDARIES = {
   "West Montgomery": [
@@ -43,13 +64,28 @@ const FALLBACK_BOUNDARIES = {
 let map,
   mapBaseLayer,
   chart,
-  briefingPlayerBound = false;
+  briefingPlayerBound = false,
+  mapScoresCache = [],
+  mapLayerIndex = new Map(),
+  activeMapFilter = "all";
 
 /* ─── Helpers ─── */
 function colorByScore(s) {
   if (s >= 70) return SCORE_COLORS.high;
   if (s >= 50) return SCORE_COLORS.medium;
   return SCORE_COLORS.low;
+}
+
+function getScoreBand(score) {
+  if (score >= 70) return "high";
+  if (score >= 50) return "medium";
+  return "low";
+}
+
+function trendLabel(trend) {
+  if (trend === "up") return "Improving";
+  if (trend === "down") return "Declining";
+  return "Stable";
 }
 
 async function fetchJson(url, options) {
@@ -61,6 +97,26 @@ async function fetchJson(url, options) {
 function formatDuration(sec) {
   const t = Number(sec) || 0;
   return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`;
+}
+
+function asValidDate(value) {
+  if (!value) return null;
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatMontgomeryDate(value) {
+  const date = asValidDate(value);
+  if (!date) return "";
+  return montgomeryDateFormatter.format(date);
+}
+
+function formatMontgomeryTime(value, { withZone = false } = {}) {
+  const date = asValidDate(value);
+  if (!date) return "";
+  return withZone
+    ? montgomeryTimeWithZoneFormatter.format(date)
+    : montgomeryTimeFormatter.format(date);
 }
 
 function getThemeToken(name, fallback) {
@@ -212,7 +268,7 @@ function handleRoute() {
   app.innerHTML = "";
   app.className = "page-transition";
   render(app);
-  
+
   // Remove loading class after render
   requestAnimationFrame(() => {
     app.classList.remove("app-loading");
@@ -222,7 +278,7 @@ function handleRoute() {
       footer.classList.remove("footer-loading");
     }
   });
-  
+
   // Auto-open tour on homepage
   if (path === "/" || path === "") {
     setTimeout(() => {
@@ -809,7 +865,23 @@ function renderFeatureMap(app) {
         <h2 class="panel__title">Live Map</h2>
         <span class="panel__subtitle">Updated daily at 2:00 AM CT</span>
       </div>
+      <div class="map-toolbar" id="map-toolbar" role="group" aria-label="Map score filters">
+        <button class="map-filter-chip map-filter-chip--active" type="button" data-map-filter="all">All Zones</button>
+        <button class="map-filter-chip" type="button" data-map-filter="high">Healthy (70+)</button>
+        <button class="map-filter-chip" type="button" data-map-filter="medium">At Risk (50-69)</button>
+        <button class="map-filter-chip" type="button" data-map-filter="low">Critical (&lt;50)</button>
+        <button class="map-filter-chip map-filter-chip--ghost" type="button" id="map-reset-view">Reset View</button>
+      </div>
       <div id="map" style="min-height:500px;"></div>
+      <div id="map-focus" class="map-focus">Click a neighborhood on the map or use the spotlight cards below.</div>
+      <div id="map-insights" class="map-insights"></div>
+      <div class="map-spotlight">
+        <div class="map-spotlight__head">
+          <h3>Neighborhood Spotlight</h3>
+          <span>Click a card to zoom</span>
+        </div>
+        <div id="map-spotlight-list" class="map-spotlight-list"></div>
+      </div>
     </div>`,
     `<div class="sidebar-card">
       <h3 class="sidebar-card__title">🎨 Color Legend</h3>
@@ -824,6 +896,7 @@ function renderFeatureMap(app) {
       <ul class="sidebar-tips">
         <li>Click a neighborhood polygon for details</li>
         <li>Colors reflect today's health score</li>
+        <li>Use score filters to focus on priority zones</li>
         <li>Zoom and pan to explore the full city</li>
         <li>Scores combine safety, blight, service, activity & communications</li>
       </ul>
@@ -834,7 +907,124 @@ function renderFeatureMap(app) {
       <a class="sidebar-link" data-link="/features/chart">Signal Snapshot →</a>
     </div>`,
   );
+  setupMapExperience();
   loadMapData();
+}
+
+function setupMapExperience() {
+  const toolbar = document.getElementById("map-toolbar");
+  const resetButton = document.getElementById("map-reset-view");
+  const spotlightList = document.getElementById("map-spotlight-list");
+
+  activeMapFilter = "all";
+  mapScoresCache = [];
+  mapLayerIndex = new Map();
+
+  if (toolbar) {
+    toolbar.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-map-filter]");
+      if (!btn) return;
+      activeMapFilter = btn.dataset.mapFilter || "all";
+      toolbar.querySelectorAll("[data-map-filter]").forEach((node) => {
+        node.classList.toggle(
+          "map-filter-chip--active",
+          node.dataset.mapFilter === activeMapFilter,
+        );
+      });
+      renderMap(mapScoresCache);
+    });
+  }
+
+  if (resetButton) {
+    resetButton.addEventListener("click", () => {
+      if (map) {
+        map.setView([32.3668, -86.3], 12, { animate: true });
+      }
+    });
+  }
+
+  if (spotlightList) {
+    spotlightList.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-neighborhood]");
+      if (!card || !map) return;
+      const neighborhood = card.dataset.neighborhood;
+      const hit = mapLayerIndex.get(neighborhood);
+      if (!hit) return;
+
+      map.fitBounds(hit.layer.getBounds(), {
+        padding: [28, 28],
+        maxZoom: 14,
+        animate: true,
+      });
+      hit.layer.openPopup();
+      const trend = trendLabel(hit.item.trend);
+      const focus = document.getElementById("map-focus");
+      if (focus) {
+        focus.innerHTML = `<strong>${hit.item.name}</strong> · Score <strong>${hit.item.score}</strong> · ${trend}<br>${hit.item.topIssues?.[0] || "No major issues today."}`;
+      }
+    });
+  }
+}
+
+function renderMapInsights(scores, visibleScores) {
+  const insights = document.getElementById("map-insights");
+  const spotlight = document.getElementById("map-spotlight-list");
+  if (!insights || !spotlight) return;
+
+  const sample = visibleScores.length ? visibleScores : scores;
+  if (!sample.length) {
+    insights.innerHTML = `<div class="map-kpi"><span class="map-kpi__label">No neighborhoods in this filter</span><strong class="map-kpi__value">0</strong></div>`;
+    spotlight.innerHTML = `<p class="empty">No neighborhoods match this filter.</p>`;
+    return;
+  }
+
+  const avgScore = Math.round(
+    sample.reduce((sum, item) => sum + Number(item.score || 0), 0) /
+      sample.length,
+  );
+  const healthy = sample.filter((item) => item.score >= 70).length;
+  const atRisk = sample.filter(
+    (item) => item.score >= 50 && item.score < 70,
+  ).length;
+  const critical = sample.filter((item) => item.score < 50).length;
+
+  insights.innerHTML = `
+    <article class="map-kpi"><span class="map-kpi__label">Neighborhoods In View</span><strong class="map-kpi__value">${sample.length}</strong></article>
+    <article class="map-kpi"><span class="map-kpi__label">Average Score</span><strong class="map-kpi__value">${avgScore}</strong></article>
+    <article class="map-kpi"><span class="map-kpi__label">Healthy</span><strong class="map-kpi__value">${healthy}</strong></article>
+    <article class="map-kpi"><span class="map-kpi__label">At Risk</span><strong class="map-kpi__value">${atRisk}</strong></article>
+    <article class="map-kpi"><span class="map-kpi__label">Critical</span><strong class="map-kpi__value">${critical}</strong></article>
+  `;
+
+  const top = sample
+    .slice()
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2)
+    .map((item) => ({ item, badge: "Top" }));
+  const watch = sample
+    .slice()
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 3)
+    .map((item) => ({ item, badge: "Watch" }));
+
+  const seen = new Set();
+  const spotlightItems = [...top, ...watch].filter(({ item }) => {
+    if (seen.has(item.name)) return false;
+    seen.add(item.name);
+    return true;
+  });
+
+  spotlight.innerHTML = spotlightItems
+    .map(({ item, badge }) => {
+      const band = getScoreBand(item.score);
+      const trend = trendLabel(item.trend);
+      return `<button type="button" class="map-spot-card map-spot-card--${band}" data-neighborhood="${item.name}">
+        <span class="map-spot-card__badge">${badge}</span>
+        <strong class="map-spot-card__name">${item.name}</strong>
+        <span class="map-spot-card__meta">Score ${item.score} · ${trend}</span>
+      </button>`;
+    })
+    .join("");
 }
 
 function renderFeatureScores(app) {
@@ -1387,16 +1577,22 @@ async function loadAlertsData() {
 function renderGeneratedAt(date, generatedAt) {
   const el = document.getElementById("generated-at");
   if (!el) return;
-  const time = new Date(generatedAt).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  el.textContent = `Snapshot ${date} at ${time}`;
+
+  if (!generatedAt) {
+    el.textContent = `Snapshot ${date}`;
+    return;
+  }
+
+  const localDate = formatMontgomeryDate(generatedAt);
+  const localTime = formatMontgomeryTime(generatedAt, { withZone: true });
+  el.textContent = `Snapshot ${localDate} at ${localTime}`;
 }
 
 function renderMap(scores) {
   const el = document.getElementById("map");
   if (!el) return;
+
+  mapScoresCache = Array.isArray(scores) ? scores.slice() : [];
 
   if (!map) {
     map = L.map("map", {
@@ -1410,21 +1606,52 @@ function renderMap(scores) {
     if (l instanceof L.Polygon) map.removeLayer(l);
   });
 
-  scores.forEach((item) => {
+  mapLayerIndex = new Map();
+  const visibleScores = mapScoresCache.filter((item) => {
+    if (activeMapFilter === "all") return true;
+    return getScoreBand(item.score) === activeMapFilter;
+  });
+
+  if (!visibleScores.length) {
+    const focus = document.getElementById("map-focus");
+    if (focus) {
+      focus.textContent =
+        "No neighborhoods match this filter. Try another score range.";
+    }
+  }
+
+  visibleScores.forEach((item) => {
     const boundary = item.boundary || FALLBACK_BOUNDARIES[item.name];
     if (!boundary) return;
     const color = colorByScore(item.score);
-    L.polygon(boundary, {
+    const layer = L.polygon(boundary, {
       color,
       weight: 2,
       fillColor: color,
-      fillOpacity: 0.3,
+      fillOpacity: 0.36,
     })
       .addTo(map)
       .bindPopup(
-        `<strong>${item.name}</strong><br/>Score: ${item.score}<br/>Top: ${item.topIssues?.[0] || "None"}`,
+        `<strong>${item.name}</strong><br/>Score: ${item.score}<br/>Trend: ${trendLabel(item.trend)}<br/>Top: ${item.topIssues?.[0] || "None"}`,
       );
+
+    layer.on("mouseover", () => {
+      layer.setStyle({ weight: 3, fillOpacity: 0.46 });
+    });
+    layer.on("mouseout", () => {
+      layer.setStyle({ weight: 2, fillOpacity: 0.36 });
+    });
+    layer.on("click", () => {
+      const focus = document.getElementById("map-focus");
+      if (focus) {
+        focus.innerHTML = `<strong>${item.name}</strong> · Score <strong>${item.score}</strong> · ${trendLabel(item.trend)}<br>${item.topIssues?.[0] || "No major issues today."}`;
+      }
+    });
+
+    mapLayerIndex.set(item.name, { layer, item });
   });
+
+  renderMapInsights(mapScoresCache, visibleScores);
 }
 
 function renderScoreCards(scores) {
@@ -1515,11 +1742,14 @@ function renderAlerts(alerts) {
   }
 
   alerts.forEach((alert) => {
+    const detectedAt = formatMontgomeryTime(alert.detectedAt, {
+      withZone: true,
+    });
     const card = document.createElement("article");
     card.className = "alert-card";
     card.innerHTML = `
       <div class="alert-head">
-        <small>${new Date(alert.detectedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</small>
+        <small>${detectedAt || "Time unavailable"}</small>
         <span class="badge ${alert.severity}">${alert.severity}</span>
       </div>
       <h3 class="alert-title">${alert.title}</h3>
@@ -2314,7 +2544,7 @@ function openTour() {
     console.warn("Tour overlay not found");
     return;
   }
-  
+
   overlay.classList.add("tour-overlay--visible");
   document.body.style.overflow = "hidden";
   currentTourSlide = 0;
@@ -2324,7 +2554,7 @@ function openTour() {
 function closeTour() {
   const overlay = document.getElementById("tour-overlay");
   if (!overlay) return;
-  
+
   overlay.classList.remove("tour-overlay--visible");
   document.body.style.overflow = "";
 }
@@ -2333,20 +2563,21 @@ function updateTourSlide() {
   const slides = document.querySelectorAll(".tour-slide");
   const indicators = document.querySelectorAll(".tour-nav__dot");
   const nextBtn = document.getElementById("tour-next");
-  
+
   // Update slides
   slides.forEach((slide, idx) => {
     slide.classList.toggle("tour-slide--active", idx === currentTourSlide);
   });
-  
+
   // Update indicators
   indicators.forEach((dot, idx) => {
     dot.classList.toggle("tour-nav__dot--active", idx === currentTourSlide);
   });
-  
+
   // Update next button text
   if (nextBtn) {
-    nextBtn.textContent = currentTourSlide === totalTourSlides - 1 ? "Get Started" : "Next";
+    nextBtn.textContent =
+      currentTourSlide === totalTourSlides - 1 ? "Get Started" : "Next";
   }
 }
 
@@ -2373,7 +2604,7 @@ function setupTour() {
   const nextButton = document.getElementById("tour-next");
   const overlay = document.getElementById("tour-overlay");
   const indicators = document.querySelectorAll(".tour-nav__dot");
-  
+
   // Open tour on Guide button click
   if (guideButton) {
     guideButton.addEventListener("click", (e) => {
@@ -2381,21 +2612,21 @@ function setupTour() {
       openTour();
     });
   }
-  
+
   // Close tour
   if (closeButton) {
     closeButton.addEventListener("click", closeTour);
   }
-  
+
   if (skipButton) {
     skipButton.addEventListener("click", closeTour);
   }
-  
+
   // Next slide
   if (nextButton) {
     nextButton.addEventListener("click", nextTourSlide);
   }
-  
+
   // Click indicator dots to jump to slide
   indicators.forEach((dot, idx) => {
     dot.addEventListener("click", () => {
@@ -2403,7 +2634,7 @@ function setupTour() {
       updateTourSlide();
     });
   });
-  
+
   // Close on overlay click (outside modal)
   if (overlay) {
     overlay.addEventListener("click", (e) => {
@@ -2412,12 +2643,13 @@ function setupTour() {
       }
     });
   }
-  
+
   // Keyboard navigation
   document.addEventListener("keydown", (e) => {
     const overlay = document.getElementById("tour-overlay");
-    if (!overlay || !overlay.classList.contains("tour-overlay--visible")) return;
-    
+    if (!overlay || !overlay.classList.contains("tour-overlay--visible"))
+      return;
+
     if (e.key === "Escape") {
       closeTour();
     } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -2426,7 +2658,7 @@ function setupTour() {
       prevTourSlide();
     }
   });
-  
+
   tourInitialized = true;
 }
 
