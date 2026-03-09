@@ -2650,7 +2650,12 @@ function setupTour() {
   const skipButton = document.getElementById("tour-skip");
   const nextButton = document.getElementById("tour-next");
   const overlay = document.getElementById("tour-overlay");
+  const slideContainer = document.getElementById("tour-slides");
   const indicators = document.querySelectorAll(".tour-nav__dot");
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
 
   // Open tour on Guide button click
   if (guideButton) {
@@ -2705,6 +2710,53 @@ function setupTour() {
       prevTourSlide();
     }
   });
+
+  // Swipe navigation for mobile/touch devices.
+  if (slideContainer) {
+    slideContainer.addEventListener(
+      "touchstart",
+      (event) => {
+        if (!event.touches || event.touches.length !== 1) return;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        touchEndX = touchStartX;
+        touchEndY = touchStartY;
+      },
+      { passive: true },
+    );
+
+    slideContainer.addEventListener(
+      "touchmove",
+      (event) => {
+        if (!event.touches || event.touches.length !== 1) return;
+        touchEndX = event.touches[0].clientX;
+        touchEndY = event.touches[0].clientY;
+      },
+      { passive: true },
+    );
+
+    slideContainer.addEventListener(
+      "touchend",
+      () => {
+        const overlayNode = document.getElementById("tour-overlay");
+        if (!overlayNode?.classList.contains("tour-overlay--visible")) return;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const horizontalSwipe =
+          Math.abs(deltaX) > 52 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2;
+
+        if (!horizontalSwipe) return;
+
+        if (deltaX < 0) {
+          nextTourSlide();
+        } else {
+          prevTourSlide();
+        }
+      },
+      { passive: true },
+    );
+  }
 
   tourInitialized = true;
 }
