@@ -1865,8 +1865,13 @@ function renderAlerts(alerts) {
   feed.innerHTML = "";
 
   if (!alerts.length) {
-    feed.innerHTML =
-      '<p class="empty">No anomalies detected for this snapshot.</p>';
+    feed.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state__icon">✅</div>
+        <h3 class="empty-state__title">All Clear — No Anomalies Detected</h3>
+        <p class="empty-state__desc">The latest pipeline snapshot found no unusual activity across Montgomery's neighborhoods. This means all civic signals are within normal ranges.</p>
+        <p class="empty-state__hint">Alerts are refreshed daily at <strong>2:00 AM CT</strong> when new data is processed. Check back after the next pipeline run for updated results.</p>
+      </div>`;
     return;
   }
 
