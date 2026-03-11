@@ -2844,6 +2844,47 @@ body[data-theme="dark"] .map-spot-card {
   background: transparent;
 }
 
+/* Quick prompt chips below chat input */
+.chat-quick-prompts {
+  padding: var(--space-sm) 0 0;
+}
+.chat-quick-prompts__label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-xs);
+}
+.chat-quick-prompts__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chat-quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+  white-space: nowrap;
+}
+.chat-quick-chip:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: var(--brand-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+}
+
 /* ============================================================
    Feature Page
    ============================================================ */

@@ -1274,6 +1274,17 @@ function renderFeatureVoice(app) {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
+      <div class="chat-quick-prompts" id="vp-quick-prompts">
+        <span class="chat-quick-prompts__label">Try these:</span>
+        <div class="chat-quick-prompts__list">
+          <button class="chat-quick-chip vp-example" type="button">🕳️ Pothole on Dexter Ave</button>
+          <button class="chat-quick-chip vp-example" type="button">💡 Street light out on Bell St</button>
+          <button class="chat-quick-chip vp-example" type="button">🗑️ Illegal dumping near Oak Park</button>
+          <button class="chat-quick-chip vp-example" type="button">🏘️ Is Cloverdale safe for families?</button>
+          <button class="chat-quick-chip vp-example" type="button">📋 Check my ticket status</button>
+          <button class="chat-quick-chip vp-example" type="button">🚰 Water main leak on Fairview</button>
+        </div>
+      </div>
     </div>`,
     `<div class="sidebar-card">
       <h3 class="sidebar-card__title">📞 What You Can Do</h3>
@@ -1310,8 +1321,14 @@ function renderFeatureVoice(app) {
   // Wire example buttons
   document.querySelectorAll(".vp-example").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.getElementById("vp-input").value = btn.textContent;
-      chatEngine.send(btn.textContent);
+      document.getElementById("vp-input").value = btn.textContent.replace(
+        /^.\s?/,
+        "",
+      );
+      chatEngine.send(btn.textContent.replace(/^.\s?/, ""));
+      // Fade out quick prompts after first use
+      const prompts = document.getElementById("vp-quick-prompts");
+      if (prompts) prompts.style.display = "none";
     });
   });
 }
