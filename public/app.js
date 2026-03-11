@@ -1185,7 +1185,7 @@ function renderFeatureBriefing(app) {
         <audio id="briefing-audio" preload="none"></audio>
       </div>
       <div class="briefing-divider"></div>
-      <h3 class="briefing-section-title">📝 Script</h3>
+      <h3 class="briefing-section-title">📝 Summary</h3>
       <article id="briefing-script" class="briefing-script">
         <div class="loading-skeleton">
           <div class="skeleton-row" style="height:16px;width:90%"></div>
