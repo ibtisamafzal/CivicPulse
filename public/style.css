@@ -4586,6 +4586,63 @@ body[data-theme="dark"] .tour-modal {
     font-size: 12px;
     padding: 6px 12px;
   }
+
+  /* --- Mobile showcase: let content-heavy cards auto-size --- */
+  .showcase__visual {
+    aspect-ratio: unset;
+  }
+  .showcase__visual-inner {
+    padding: var(--space-md);
+  }
+  /* Keep map visual compact with a fixed ratio on mobile */
+  .sc-vis--map {
+    aspect-ratio: 4/3;
+  }
+  /* Briefing, Scores, Alerts, Voice: slightly smaller text for fit */
+  .sc-scores__card {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .sc-scores__val {
+    font-size: 17px;
+  }
+  .sc-scores__name {
+    font-size: 11px;
+  }
+  .sc-briefing__card {
+    padding: 8px 10px;
+  }
+  .sc-briefing__headline {
+    font-size: 11px;
+  }
+  .sc-briefing__sub {
+    font-size: 9px;
+  }
+  .sc-alerts__card {
+    padding: 10px 12px;
+    gap: 4px;
+  }
+  .sc-alerts__msg {
+    font-size: 11px;
+  }
+  .sc-voice__bubble {
+    padding: 7px 10px;
+    font-size: 10px;
+  }
+  .sc-voice__ticket-row {
+    font-size: 9px;
+  }
+  .sc-voice__input-bar {
+    padding: 6px 10px;
+  }
+  .sc-ask__text {
+    font-size: 10px;
+  }
+  .sc-ask__answer {
+    padding: 10px;
+    gap: 6px;
+  }
+
   .leaflet-popup-content {
     min-width: 150px;
     max-width: 190px;

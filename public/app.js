@@ -493,38 +493,59 @@ function showcaseSectionsHTML() {
             <div class="showcase__visual-inner sc-vis--map">
               <svg class="sc-map" viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0" y="0" width="320" height="240" rx="12" fill="#0a1628"/>
-                <!-- grid lines -->
-                <line x1="0" y1="60" x2="320" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                <line x1="0" y1="120" x2="320" y2="120" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                <line x1="0" y1="180" x2="320" y2="180" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                <line x1="80" y1="0" x2="80" y2="240" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                <line x1="160" y1="0" x2="160" y2="240" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
-                <line x1="240" y1="0" x2="240" y2="240" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <!-- roads -->
+                <line x1="0" y1="105" x2="320" y2="105" stroke="rgba(255,255,255,0.08)" stroke-width="2" stroke-dasharray="6,4"/>
+                <line x1="160" y1="0" x2="160" y2="240" stroke="rgba(255,255,255,0.08)" stroke-width="2" stroke-dasharray="6,4"/>
+                <line x1="30" y1="180" x2="300" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <line x1="50" y1="30" x2="280" y2="200" stroke="rgba(255,255,255,0.05)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <!-- water feature -->
+                <path d="M0,200 Q60,185 100,195 T200,188 T320,200 V240 H0 Z" fill="rgba(59,130,246,0.08)" stroke="rgba(59,130,246,0.12)" stroke-width="0.5"/>
                 <!-- neighborhoods -->
-                <polygon points="40,40 120,35 130,100 60,110" fill="rgba(6,214,160,0.25)" stroke="#06d6a0" stroke-width="1.5"/>
-                <polygon points="135,30 220,50 210,105 140,95" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1.5"/>
-                <polygon points="230,45 290,55 285,115 225,100" fill="rgba(6,214,160,0.3)" stroke="#06d6a0" stroke-width="1.5"/>
-                <polygon points="55,120 140,110 150,185 70,190" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1.5"/>
-                <polygon points="160,108 250,105 240,180 165,178" fill="rgba(6,214,160,0.2)" stroke="#06d6a0" stroke-width="1.5"/>
-                <!-- dots -->
-                <circle cx="85" cy="70" r="5" fill="#06d6a0" opacity="0.9"/>
-                <circle cx="175" cy="72" r="5" fill="#f59e0b" opacity="0.9"/>
-                <circle cx="255" cy="78" r="5" fill="#06d6a0" opacity="0.9"/>
-                <circle cx="100" cy="150" r="5" fill="#ef4444" opacity="0.9"/>
-                <circle cx="200" cy="142" r="5" fill="#06d6a0" opacity="0.9"/>
-                <!-- labels -->
-                <text x="70" y="88" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter">78</text>
-                <text x="163" y="90" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter">52</text>
-                <text x="243" y="96" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter">81</text>
-                <text x="88" y="168" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter">34</text>
-                <text x="188" y="160" font-size="8" fill="rgba(255,255,255,0.5)" font-family="Inter">72</text>
+                <polygon points="30,28 115,22 125,88 55,96" fill="rgba(6,214,160,0.25)" stroke="#06d6a0" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="130,20 225,38 215,94 135,82" fill="rgba(245,158,11,0.2)" stroke="#f59e0b" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="235,32 300,42 295,100 230,90" fill="rgba(6,214,160,0.3)" stroke="#06d6a0" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="45,110 135,100 148,172 62,178" fill="rgba(239,68,68,0.2)" stroke="#ef4444" stroke-width="1.5" stroke-linejoin="round"/>
+                <polygon points="155,98 252,94 244,170 160,166" fill="rgba(6,214,160,0.2)" stroke="#06d6a0" stroke-width="1.5" stroke-linejoin="round"/>
+                <!-- score dots -->
+                <circle cx="76" cy="56" r="12" fill="rgba(6,214,160,0.18)" stroke="#06d6a0" stroke-width="0.5"/>
+                <circle cx="76" cy="56" r="4" fill="#06d6a0"/>
+                <circle cx="175" cy="58" r="12" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="0.5"/>
+                <circle cx="175" cy="58" r="4" fill="#f59e0b"/>
+                <circle cx="264" cy="64" r="12" fill="rgba(6,214,160,0.18)" stroke="#06d6a0" stroke-width="0.5"/>
+                <circle cx="264" cy="64" r="4" fill="#06d6a0"/>
+                <circle cx="95" cy="138" r="12" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="0.5"/>
+                <circle cx="95" cy="138" r="4" fill="#ef4444"/>
+                <circle cx="200" cy="132" r="12" fill="rgba(6,214,160,0.18)" stroke="#06d6a0" stroke-width="0.5"/>
+                <circle cx="200" cy="132" r="4" fill="#06d6a0"/>
+                <!-- score labels -->
+                <text x="70" y="78" font-size="9" fill="#06d6a0" font-family="Inter" font-weight="700">78</text>
+                <text x="169" y="80" font-size="9" fill="#f59e0b" font-family="Inter" font-weight="700">52</text>
+                <text x="258" y="86" font-size="9" fill="#06d6a0" font-family="Inter" font-weight="700">81</text>
+                <text x="89" y="158" font-size="9" fill="#ef4444" font-family="Inter" font-weight="700">34</text>
+                <text x="194" y="152" font-size="9" fill="#06d6a0" font-family="Inter" font-weight="700">72</text>
+                <!-- neighborhood names -->
+                <text x="42" y="48" font-size="7" fill="rgba(255,255,255,0.55)" font-family="Inter" font-weight="500">Cloverdale</text>
+                <text x="146" y="46" font-size="7" fill="rgba(255,255,255,0.55)" font-family="Inter" font-weight="500">Garden Dist.</text>
+                <text x="238" y="52" font-size="7" fill="rgba(255,255,255,0.55)" font-family="Inter" font-weight="500">Chisholm</text>
+                <text x="56" y="126" font-size="7" fill="rgba(255,255,255,0.55)" font-family="Inter" font-weight="500">West Montg.</text>
+                <text x="166" y="120" font-size="7" fill="rgba(255,255,255,0.55)" font-family="Inter" font-weight="500">Oak Park</text>
+                <!-- map pin icons (small triangles) -->
+                <path d="M76,46 l3,8 h-6 z" fill="#06d6a0" opacity="0.7"/>
+                <path d="M175,48 l3,8 h-6 z" fill="#f59e0b" opacity="0.7"/>
+                <path d="M264,54 l3,8 h-6 z" fill="#06d6a0" opacity="0.7"/>
+                <path d="M95,128 l3,8 h-6 z" fill="#ef4444" opacity="0.7"/>
+                <path d="M200,122 l3,8 h-6 z" fill="#06d6a0" opacity="0.7"/>
                 <!-- legend -->
                 <rect x="16" y="210" width="8" height="8" rx="2" fill="#06d6a0"/>
-                <text x="28" y="217" font-size="7" fill="rgba(255,255,255,0.4)" font-family="Inter">High</text>
-                <rect x="56" y="210" width="8" height="8" rx="2" fill="#f59e0b"/>
-                <text x="68" y="217" font-size="7" fill="rgba(255,255,255,0.4)" font-family="Inter">Medium</text>
-                <rect x="108" y="210" width="8" height="8" rx="2" fill="#ef4444"/>
-                <text x="120" y="217" font-size="7" fill="rgba(255,255,255,0.4)" font-family="Inter">Low</text>
+                <text x="28" y="217" font-size="7" fill="rgba(255,255,255,0.5)" font-family="Inter" font-weight="500">Healthy</text>
+                <rect x="66" y="210" width="8" height="8" rx="2" fill="#f59e0b"/>
+                <text x="78" y="217" font-size="7" fill="rgba(255,255,255,0.5)" font-family="Inter" font-weight="500">At Risk</text>
+                <rect x="114" y="210" width="8" height="8" rx="2" fill="#ef4444"/>
+                <text x="126" y="217" font-size="7" fill="rgba(255,255,255,0.5)" font-family="Inter" font-weight="500">Critical</text>
+                <!-- compass -->
+                <circle cx="293" cy="210" r="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/>
+                <text x="290" y="206" font-size="7" fill="rgba(255,255,255,0.5)" font-family="Inter" font-weight="700">N</text>
+                <line x1="293" y1="208" x2="293" y2="218" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
               </svg>
             </div>
           </div>
