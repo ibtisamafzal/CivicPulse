@@ -68,6 +68,27 @@ let map,
   mapLayerIndex = new Map(),
   activeMapFilter = "all";
 
+/* ─── Prefetch cache ─── */
+const _prefetchCache = {};
+let _prefetchStarted = false;
+
+function prefetchData() {
+  if (_prefetchStarted) return;
+  _prefetchStarted = true;
+  // Fire-and-forget: silently cache key API responses while user browses homepage
+  _prefetchCache.scores = fetchJson("/api/scores").catch(() => null);
+  _prefetchCache.alerts = fetchJson("/api/alerts").catch(() => null);
+  _prefetchCache.briefing = fetchJson("/api/briefing").catch(() => null);
+}
+
+async function getCached(key, url) {
+  if (_prefetchCache[key]) {
+    const result = await _prefetchCache[key];
+    if (result) return result;
+  }
+  return fetchJson(url);
+}
+
 /* ─── Helpers ─── */
 function colorByScore(s) {
   if (s >= 70) return SCORE_COLORS.high;
@@ -395,6 +416,8 @@ function renderLanding(app) {
     <!-- Showcase Sections -->
     ${showcaseSectionsHTML()}
 
+    <!-- CTA (prefetch data while user browses homepage) -->
+    ${(prefetchData(), "")}
     <!-- CTA -->
     <section class="cta-section">
       <div class="container">
@@ -901,7 +924,14 @@ function renderFeatureMap(app) {
         <button class="map-filter-chip" type="button" data-map-filter="low">Critical (&lt;50)</button>
         <button class="map-filter-chip map-filter-chip--ghost" type="button" id="map-reset-view">Reset View</button>
       </div>
-      <div id="map" style="min-height:500px;"></div>
+      <div id="map" style="min-height:500px;">
+        <div class="loading-skeleton loading-skeleton--map">
+          <div class="skeleton-map-placeholder">
+            <div class="skeleton-map-icon">🗺️</div>
+            <div class="skeleton-map-text">Loading map data...</div>
+          </div>
+        </div>
+      </div>
       <div id="map-focus" class="map-focus">Click a neighborhood on the map or use the spotlight cards below.</div>
       <div id="map-insights" class="map-insights"></div>
       <div class="map-spotlight">
@@ -1107,6 +1137,16 @@ function renderFeatureChart(app) {
         <span class="panel__subtitle">All neighborhoods</span>
       </div>
       <div class="chart-container">
+        <div id="chart-skeleton" class="loading-skeleton">
+          <div class="skeleton-chart-bars">
+            <div class="skeleton-bar" style="height:65%"></div>
+            <div class="skeleton-bar" style="height:80%"></div>
+            <div class="skeleton-bar" style="height:45%"></div>
+            <div class="skeleton-bar" style="height:30%"></div>
+            <div class="skeleton-bar" style="height:55%"></div>
+          </div>
+          <div class="skeleton-map-text">Loading chart...</div>
+        </div>
         <canvas id="score-chart" height="350"></canvas>
       </div>
     </div>`,
@@ -1146,9 +1186,22 @@ function renderFeatureBriefing(app) {
       </div>
       <div class="briefing-divider"></div>
       <h3 class="briefing-section-title">📝 Script</h3>
-      <article id="briefing-script" class="briefing-script"><p>Loading...</p></article>
+      <article id="briefing-script" class="briefing-script">
+        <div class="loading-skeleton">
+          <div class="skeleton-row" style="height:16px;width:90%"></div>
+          <div class="skeleton-row" style="height:16px;width:75%"></div>
+          <div class="skeleton-row" style="height:16px;width:85%"></div>
+          <div class="skeleton-row" style="height:16px;width:60%"></div>
+        </div>
+      </article>
       <h3 class="briefing-section-title" style="margin-top:var(--space-lg);">📰 Headlines</h3>
-      <div id="briefing-cards" class="briefing-cards"><p class="empty">Loading...</p></div>
+      <div id="briefing-cards" class="briefing-cards">
+        <div class="loading-skeleton" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+          <div class="skeleton-row" style="height:100px"></div>
+          <div class="skeleton-row" style="height:100px"></div>
+          <div class="skeleton-row" style="height:100px"></div>
+        </div>
+      </div>
     </div>`,
     `<div class="sidebar-card">
       <h3 class="sidebar-card__title">🕐 Schedule</h3>
@@ -1594,7 +1647,7 @@ function render404(app) {
 
 async function loadMapData() {
   try {
-    const p = await fetchJson("/api/scores");
+    const p = await getCached("scores", "/api/scores");
     renderMap(p.scores || []);
   } catch {
     document.getElementById("map").innerHTML =
@@ -1604,7 +1657,7 @@ async function loadMapData() {
 
 async function loadScoresData() {
   try {
-    const p = await fetchJson("/api/scores");
+    const p = await getCached("scores", "/api/scores");
     renderScoreCards(p.scores || []);
   } catch {
     document.getElementById("score-grid").innerHTML =
@@ -1614,17 +1667,22 @@ async function loadScoresData() {
 
 async function loadChartData() {
   try {
-    const p = await fetchJson("/api/scores");
+    const p = await getCached("scores", "/api/scores");
+    const skel = document.getElementById("chart-skeleton");
+    if (skel) skel.remove();
     renderChart(p.scores || []);
-  } catch {}
+  } catch {
+    const skel = document.getElementById("chart-skeleton");
+    if (skel) skel.remove();
+  }
 }
 
 async function loadBriefingData() {
   setupBriefingAudioPlayer();
   try {
     const [bp, sp] = await Promise.all([
-      fetchJson("/api/briefing").catch(() => ({ briefing: null })),
-      fetchJson("/api/scores").catch(() => ({ briefing: null })),
+      getCached("briefing", "/api/briefing").catch(() => ({ briefing: null })),
+      getCached("scores", "/api/scores").catch(() => ({ briefing: null })),
     ]);
     renderBriefing(bp.briefing || sp.briefing || null);
   } catch {
@@ -1634,7 +1692,7 @@ async function loadBriefingData() {
 
 async function loadAlertsData() {
   try {
-    const p = await fetchJson("/api/alerts");
+    const p = await getCached("alerts", "/api/alerts");
     renderAlerts(p.alerts || []);
   } catch {
     document.getElementById("alert-feed").innerHTML =
