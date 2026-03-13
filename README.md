@@ -6,10 +6,10 @@ This repository contains a complete, runnable civic data platform with a fronten
 
 ## Live Links
 
-- Frontend URL: `https://civic-pulse-beta.vercel.app`
-- Backend URL: `https://civicpulse-backend-5xutw32mjq-uc.a.run.app`
-- Demo video URL: `https://drive.google.com/file/d/16QAQ489DDDPkT-jdtqzQuXVmaKlp8Pwu/view?usp=sharing`
-- Slide deck URL: `https://drive.google.com/file/d/1lFeyBEUfZHFUD3hxVISANVIgECz5P7iP/view?usp=sharing`
+- Frontend URL: [https://civic-pulse-beta.vercel.app](https://civic-pulse-beta.vercel.app)
+- Backend URL: [https://civicpulse-backend-5xutw32mjq-uc.a.run.app](https://civicpulse-backend-5xutw32mjq-uc.a.run.app)
+- Demo video URL: [Google Drive demo video](https://drive.google.com/file/d/16QAQ489DDDPkT-jdtqzQuXVmaKlp8Pwu/view?usp=sharing)
+- Slide deck URL: [Google Drive slide deck](https://drive.google.com/file/d/1lFeyBEUfZHFUD3hxVISANVIgECz5P7iP/view?usp=sharing)
 
 ## Project Snapshot
 
@@ -41,52 +41,52 @@ CivicPulse unifies public civic signals and AI into one daily decision layer:
 
 ### Feature 1: Equity Map
 
-- URL: `/features/map`
+- URL: [/features/map](https://civic-pulse-beta.vercel.app/features/map)
 - Try this: Click neighborhood polygons.
 - Expected output: Color-coded health status and trend per neighborhood.
-- API: `GET /api/scores`
+- API: [GET /api/scores](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/scores)
 
 ### Feature 2: Neighborhood Health Scores
 
-- URL: `/features/scores`
+- URL: [/features/scores](https://civic-pulse-beta.vercel.app/features/scores)
 - Try this: Review cards for all neighborhoods.
 - Expected output: Composite score, factor breakdown, top pressure points, trend.
-- API: `GET /api/scores`
+- API: [GET /api/scores](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/scores)
 
 ### Feature 3: Signal Snapshot Chart
 
-- URL: `/features/chart`
+- URL: [/features/chart](https://civic-pulse-beta.vercel.app/features/chart)
 - Try this: Compare neighborhoods side by side.
 - Expected output: Fast visual ranking of strongest vs weakest zones.
-- API: `GET /api/scores`
+- API: [GET /api/scores](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/scores)
 
 ### Feature 4: Morning Briefing (AI + Audio)
 
-- URL: `/features/briefing`
+- URL: [/features/briefing](https://civic-pulse-beta.vercel.app/features/briefing)
 - Try this: Press play and inspect headline cards.
 - Expected output: Daily script summary + narration audio when available.
-- API: `GET /api/briefing`
+- API: [GET /api/briefing](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/briefing)
 
 ### Feature 5: Proactive Alerts
 
-- URL: `/features/alerts`
+- URL: [/features/alerts](https://civic-pulse-beta.vercel.app/features/alerts)
 - Try this: Inspect severity-ranked alerts.
 - Expected output: High/medium/low anomalies with recommended actions.
-- API: `GET /api/alerts`
+- API: [GET /api/alerts](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/alerts)
 
 ### Feature 6: Ask CivicPulse (AI Q&A)
 
-- URL: `/features/ask`
+- URL: [/features/ask](https://civic-pulse-beta.vercel.app/features/ask)
 - Demo prompt: `Which neighborhood needs urgent intervention today and why?`
 - Expected output: Structured answer with concise civic reasoning.
-- API: `GET /api/query?q=...`
+- API: [GET /api/query?q=...](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/query?q=Which%20neighborhood%20needs%20urgent%20intervention%20today%20and%20why%3F)
 
 ### Feature 7: Voice + 311 Ticket Agent
 
 - Entry: Floating `311 Agent` button
 - Demo prompt: `Streetlight outage at 123 Oak Street. It feels unsafe at night.`
 - Expected output: Multi-turn intake, then a created ticket response with priority and ETA.
-- APIs: `POST /api/voice/session`, `POST /api/ticket`
+- APIs: [POST /api/voice/session](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/voice/session), [POST /api/ticket](https://civicpulse-backend-5xutw32mjq-uc.a.run.app/api/ticket)
 
 ## Scoring Model
 
@@ -181,25 +181,33 @@ npm start
 
 1. Open in browser.
 
-```text
-http://localhost:8080
-```
+[http://localhost:8080](http://localhost:8080)
 
 ## API Smoke Tests
 
 After startup, run:
 
+- Base URL: [http://localhost:8080](http://localhost:8080)
+- Health check: [http://localhost:8080/health](http://localhost:8080/health)
+- Scores: [http://localhost:8080/api/scores](http://localhost:8080/api/scores)
+- Alerts: [http://localhost:8080/api/alerts](http://localhost:8080/api/alerts)
+- Query example: [http://localhost:8080/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F](http://localhost:8080/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F)
+
 ```bash
-curl http://localhost:8080/health
-curl http://localhost:8080/api/scores
-curl http://localhost:8080/api/alerts
-curl "http://localhost:8080/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F"
+BASE_URL="$LOCAL_BASE_URL"
+curl "$BASE_URL/health"
+curl "$BASE_URL/api/scores"
+curl "$BASE_URL/api/alerts"
+curl "$BASE_URL/api/query?q=What%20is%20the%20highest%20scoring%20neighborhood%20today%3F"
 ```
 
 Sample ticket creation:
 
+- Ticket endpoint: [http://localhost:8080/api/ticket](http://localhost:8080/api/ticket)
+
 ```bash
-curl -X POST http://localhost:8080/api/ticket \
+BASE_URL="$LOCAL_BASE_URL"
+curl -X POST "$BASE_URL/api/ticket" \
   -H "Content-Type: application/json" \
   -d '{"type":"Streetlight","address":"123 Oak St","description":"Light out and unsafe at night","residentName":"Demo User"}'
 ```
